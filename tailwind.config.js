@@ -2,8 +2,14 @@
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'arial', 'sans-serif'],
+      },
+      backgroundImage: (theme) => ({
+        'kitchen-utensils': "url('./src/lib/images/kitchen-utensils.png')",
+      }),
+    }
   },
   plugins: [],
 }
-

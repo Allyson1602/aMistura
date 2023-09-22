@@ -6,8 +6,4 @@
 	<main>
 		<slot />
 	</main>
-
-	<footer>
-		<p>footer</p>
-	</footer>
 </div>
