@@ -4,8 +4,10 @@
     export let size: "default" | "small" = "default";
     export let text: string;
     export let index: number = 0;
+    export let isRemoved: boolean = true;
+    export let onRemove: (() => void) | undefined = undefined;
 
-    const rainbow = [
+    const rainbow: string[] = [
         'bg-orange-100',
         'bg-orange-200',
         'bg-orange-300',
@@ -38,8 +40,10 @@
         'bg-blue-300',
     ];
 
-    const handleRemoveChip = () => {
-        //
+    const handleRemoveChip = (): void => {
+        if (isRemoved) {
+            onRemove?.();
+        }
     };
 
 	const getBgColor = (): string => {
@@ -53,9 +57,11 @@
 
 <button on:click={handleRemoveChip}>
     <div class={getBgColor() + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
-        <span class="absolute right-[-5px] top-[-5px]">
-            <Icon icon="ph:x-circle-fill" width="20" height="20" class="text-red-900" />
-        </span>
+        {#if isRemoved}
+            <span class="absolute right-[-5px] top-[-5px]">
+                <Icon icon="ph:x-circle-fill" width="20" height="20" class="text-red-900" />
+            </span>
+        {/if}
 
         <p class={size === "default" ? "text-sm" : "text-xs"}>{text}</p>
     </div>
