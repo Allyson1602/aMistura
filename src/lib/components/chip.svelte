@@ -2,11 +2,7 @@
 	import Icon from "@iconify/svelte";
 
     export let text: string;
-    export let color: string;
-
-    const handleRemoveChip = () => {
-        //
-    };
+    export let index: number = 0;
 
     const rainbow = [
         'bg-orange-100',
@@ -40,10 +36,22 @@
         'bg-blue-200',
         'bg-blue-300',
     ];
+
+    const handleRemoveChip = () => {
+        //
+    };
+
+	const getBgColor = (): string => {
+        if (index + 1 > rainbow.length) {
+            index = 0;
+        }
+
+		return rainbow[index];
+	};
 </script>
 
 <button on:click={handleRemoveChip}>
-    <div class={color + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
+    <div class={getBgColor() + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
         <span class="absolute right-[-5px] top-[-5px]">
             <Icon icon="ph:x-circle-fill" width="20" height="20" class="text-red-900" />
         </span>

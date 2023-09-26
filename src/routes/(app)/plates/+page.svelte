@@ -50,17 +50,17 @@ import Icon from "@iconify/svelte";
 			<p class="text-xl">Bolo de fubá</p>
 
 			<div class="border-b border-b-orange-200 pb-4">
-				<Chip text="Romã" color="bg-orange-200" />
-				<Chip text="Romã" color="bg-orange-200" />
-				<Chip text="Romã" color="bg-orange-200" />
-				<Chip text="Romã" color="bg-orange-200" />
+				<Chip text="Romã" index={0} />
+				<Chip text="Romã" index={1} />
+				<Chip text="Romã" index={2} />
+				<Chip text="Romã" index={3} />
 			</div>
 			
 			<div>
-				<Chip text="Mexirica" color="bg-neutral-300" />
-				<Chip text="Mexirica" color="bg-neutral-300" />
-				<Chip text="Mexirica" color="bg-neutral-300" />
-				<Chip text="Mexirica" color="bg-neutral-300" />
+				<Chip text="Mexirica" />
+				<Chip text="Mexirica" />
+				<Chip text="Mexirica" />
+				<Chip text="Mexirica" />
 			</div>
 		</div>
 	</div>

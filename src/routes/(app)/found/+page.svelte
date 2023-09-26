@@ -5,49 +5,6 @@
 	let foundedFoods: string[] = [];
 	let selectedFoods: string[] = ["manga", "laranja", "sal", "macarrão", "trigo", "miojo", "água", "tomate", "pêra", "salsisha", "alface", "farinha", "beterraba", "batata", "açafrão"];
 
-	let currentCodeColor = 100;
-	let currentNameColor = "orange";
-
-	const getRainbowColor = (): string => {
-		let currentColor = `bg-${currentNameColor}-${currentCodeColor}`;
-
-		if (currentCodeColor === 300 && currentNameColor === "orange") {
-			currentNameColor = "amber";
-		} else if (currentCodeColor === 100 && currentNameColor === "amber") {
-			currentNameColor = "yellow";
-		} else if (currentCodeColor === 300 && currentNameColor === "yellow") {
-			currentNameColor = "lime";
-		} else if (currentCodeColor === 100 && currentNameColor === "lime") {
-			currentNameColor = "green";
-		} else if (currentCodeColor === 300 && currentNameColor === "green") {
-			currentNameColor = "esmerald";
-		} else if (currentCodeColor === 100 && currentNameColor === "esmerald") {
-			currentNameColor = "teal";
-		} else if (currentCodeColor === 300 && currentNameColor === "teal") {
-			currentNameColor = "cyan";
-		} else if (currentCodeColor === 100 && currentNameColor === "cyan") {
-			currentNameColor = "sky";
-		} else if (currentCodeColor === 300 && currentNameColor === "sky") {
-			currentNameColor = "blue";
-		} else if (currentCodeColor === 100 && currentNameColor === "blue") {
-			currentNameColor = "orange";
-		} else {
-			if (
-				currentNameColor === "amber" ||
-				currentNameColor === "lime" ||
-				currentNameColor === "esmerald" ||
-				currentNameColor === "cyan" ||
-				currentNameColor === "blue"
-			) {
-				currentCodeColor -= 100;
-			} else {
-				currentCodeColor += 100;
-			}
-		}
-
-		return currentColor;
-	};
-
 	const handleInputFoodValue = (event: Event & {
 		currentTarget: EventTarget & HTMLInputElement;
 	}) => {
@@ -98,8 +55,8 @@
 
 			{#if selectedFoods.length > 0}
 				<div class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
-					{#each selectedFoods as food (food)}
-						<Chip text={food} color={getRainbowColor()} />
+					{#each selectedFoods as food, index (food)}
+						<Chip text={food} index={index} />
 					{/each}
 				</div>
 			{/if}
