@@ -7,6 +7,39 @@
     const handleRemoveChip = () => {
         //
     };
+
+    const rainbow = [
+        'bg-orange-100',
+        'bg-orange-200',
+        'bg-orange-300',
+        'bg-amber-100',
+        'bg-amber-200',
+        'bg-amber-300',
+        'bg-yellow-100',
+        'bg-yellow-200',
+        'bg-yellow-300',
+        'bg-lime-100',
+        'bg-lime-200',
+        'bg-lime-300',
+        'bg-green-100',
+        'bg-green-200',
+        'bg-green-300',
+        'bg-esmerald-100',
+        'bg-esmerald-200',
+        'bg-esmerald-300',
+        'bg-teal-100',
+        'bg-teal-200',
+        'bg-teal-300',
+        'bg-cyan-100',
+        'bg-cyan-200',
+        'bg-cyan-300',
+        'bg-sky-100',
+        'bg-sky-200',
+        'bg-sky-300',
+        'bg-blue-100',
+        'bg-blue-200',
+        'bg-blue-300',
+    ];
 </script>
 
 <button on:click={handleRemoveChip}>
