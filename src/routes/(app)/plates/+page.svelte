@@ -11,8 +11,8 @@ import Icon from "@iconify/svelte";
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
-<div class="">
-	<div class="flex justify-between">
+<div>
+	<div class="flex justify-between md:hidden">
 		<button class="text-orange-400 font-semibold">anterior</button>
 		<button class="text-orange-400 font-semibold">próximo</button>
 	</div>
@@ -26,21 +26,21 @@ import Icon from "@iconify/svelte";
 
 		<Splide hasTrack={ false }>
 			<SplideTrack style="min-height: 15rem">
-				{ #each ["https://picsum.photos/200/300", "https://picsum.photos/200/300"] as slide }
+				{ #each ["https://picsum.photos/600/300", "https://picsum.photos/200/300"] as slide }
 					<SplideSlide>
-						<img src={ slide } alt={ slide } class="w-full h-60 max-h-60 object-contain">
+						<img src={ slide } alt={ slide } class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg">
 					</SplideSlide>
 				{ /each }
 			</SplideTrack>
 
-			<ul class="splide__pagination !hidden"></ul>
+			<ul class="splide__pagination invisible"></ul>
 
 			<div class="splide__arrows">
-				<button class="splide__arrow splide__arrow--prev !hidden">
+				<button class="splide__arrow splide__arrow--prev invisible !bg-transparent text-3xl md:visible md:left-[0.5em]">
 					<Icon icon="ph:caret-double-right" />
 				</button>
 
-				<button class="splide__arrow splide__arrow--next !hidden">
+				<button class="splide__arrow splide__arrow--next invisible !bg-transparent text-3xl md:visible md:right-[0.5em]">
 					<Icon icon="ph:caret-double-right" />
 				</button>
 			</div>
@@ -57,10 +57,10 @@ import Icon from "@iconify/svelte";
 			</div>
 			
 			<div>
-				<Chip text="Mexirica" />
-				<Chip text="Mexirica" />
-				<Chip text="Mexirica" />
-				<Chip text="Mexirica" />
+				<Chip size="small" text="Mexirica" isdisabled={true} />
+				<Chip size="small" text="Mexirica" isdisabled={true} />
+				<Chip size="small" text="Mexirica" isdisabled={true} />
+				<Chip size="small" text="Mexirica" isdisabled={true} />
 			</div>
 		</div>
 	</div>

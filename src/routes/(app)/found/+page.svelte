@@ -22,7 +22,7 @@
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
 
-<div class="grid grid-cols-1 grow auto-rows-min md:grid-cols-2 md:gap-10">
+<div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10">
 	<div>
 		<div class="flex flex-col max-w-[400px] mx-auto">
 			<label for="food-field" class="text-sm text-neutral-700">O que tem pra comer?</label>

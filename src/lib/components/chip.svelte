@@ -4,7 +4,7 @@
     export let size: "default" | "small" = "default";
     export let text: string;
     export let index: number = 0;
-    export let isRemoved: boolean = true;
+    export let isRemoved: boolean = false;
     export let isdisabled: boolean = false;
     export let onRemove: (() => void) | undefined = undefined;
 

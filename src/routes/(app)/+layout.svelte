@@ -9,7 +9,7 @@
 		<main class="grow flex flex-col md:flex-row">
 			<Menu />
 	
-			<div class="p-5">
+			<div class="p-5 grow">
 				<slot />
 			</div>
 		</main>
