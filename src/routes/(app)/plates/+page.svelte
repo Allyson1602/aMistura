@@ -65,4 +65,3 @@ import Icon from "@iconify/svelte";
 		</div>
 	</div>
 </div>
-<!-- Alterar Chip para ter tamanhos diferentes (small, default). Definir uma cor de fundo padrão. Opção desabilitado. Opção sem ação e botão de remover -->

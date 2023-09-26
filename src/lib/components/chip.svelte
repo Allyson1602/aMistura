@@ -5,6 +5,7 @@
     export let text: string;
     export let index: number = 0;
     export let isRemoved: boolean = true;
+    export let isdisabled: boolean = false;
     export let onRemove: (() => void) | undefined = undefined;
 
     const rainbow: string[] = [
@@ -47,6 +48,10 @@
     };
 
 	const getBgColor = (): string => {
+        if (isdisabled) {
+            return "bg-neutral-300";
+        }
+
         if (index + 1 > rainbow.length) {
             index = 0;
         }
@@ -55,7 +60,7 @@
 	};
 </script>
 
-<button on:click={handleRemoveChip}>
+<button on:click={handleRemoveChip} disabled={isdisabled}>
     <div class={getBgColor() + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
         {#if isRemoved}
             <span class="absolute right-[-5px] top-[-5px]">
