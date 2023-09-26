@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from "@iconify/svelte";
 
+    export let size: "default" | "small" = "default";
     export let text: string;
     export let index: number = 0;
 
@@ -56,6 +57,6 @@
             <Icon icon="ph:x-circle-fill" width="20" height="20" class="text-red-900" />
         </span>
 
-        <p>{text}</p>
+        <p class={size === "default" ? "text-sm" : "text-xs"}>{text}</p>
     </div>
 </button>
