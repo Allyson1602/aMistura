@@ -9,13 +9,15 @@
 		<main class="grow flex flex-col md:flex-row">
 			<Menu />
 	
-			<slot />
+			<div class="p-5">
+				<slot />
+			</div>
 		</main>
 		
 		<div class="h-16 relative bg-blue-400 bg-kitchen-utensils md:hidden">
 			<div class="w-full flex justify-center mt-[-16px] absolute left-0 top-0">
 				<button>
-					<Icon icon="ph:hand-grabbing-fill" width="32" height="32" class="text-orange-400" />
+					<Icon icon="ph:hand-grabbing-bold" width="32" height="32" class="text-orange-400" />
 				</button>
 			</div>
 		</div>

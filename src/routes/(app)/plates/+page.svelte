@@ -1,5 +1,9 @@
 <script lang="ts">
-
+	import Chip from "$lib/components/chip.svelte";
+import Icon from "@iconify/svelte";
+	import { Splide, SplideSlide, SplideTrack } from "@splidejs/svelte-splide";
+	import "@splidejs/svelte-splide/css";
+	import "@splidejs/svelte-splide/css";
 </script>
 
 <svelte:head>
@@ -7,4 +11,58 @@
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
-<p>plates</p>
+<div class="">
+	<div class="flex justify-between">
+		<button class="text-orange-400 font-semibold">anterior</button>
+		<button class="text-orange-400 font-semibold">próximo</button>
+	</div>
+
+	<div class="mt-4">
+		<!-- <div class="flex justify-center gap-1 mb-3">
+			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
+			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
+			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
+		</div> -->
+
+		<Splide hasTrack={ false }>
+			<SplideTrack style="min-height: 15rem">
+				{ #each ["https://picsum.photos/200/300", "https://picsum.photos/200/300"] as slide }
+					<SplideSlide>
+						<img src={ slide } alt={ slide } class="w-full h-60 max-h-60 object-contain">
+					</SplideSlide>
+				{ /each }
+			</SplideTrack>
+
+			<ul class="splide__pagination !hidden"></ul>
+
+			<div class="splide__arrows">
+				<button class="splide__arrow splide__arrow--prev !hidden">
+					<Icon icon="ph:caret-double-right" />
+				</button>
+
+				<button class="splide__arrow splide__arrow--next !hidden">
+					<Icon icon="ph:caret-double-right" />
+				</button>
+			</div>
+		</Splide>
+
+		<div class="flex flex-col gap-4 items-center mt-4">
+			<p class="text-xl">Bolo de fubá</p>
+
+			<div class="border-b border-b-orange-200 pb-4">
+				<Chip text="Romã" color="bg-orange-200" />
+				<Chip text="Romã" color="bg-orange-200" />
+				<Chip text="Romã" color="bg-orange-200" />
+				<Chip text="Romã" color="bg-orange-200" />
+			</div>
+			
+			<div>
+				<Chip text="Mexirica" color="bg-neutral-300" />
+				<Chip text="Mexirica" color="bg-neutral-300" />
+				<Chip text="Mexirica" color="bg-neutral-300" />
+				<Chip text="Mexirica" color="bg-neutral-300" />
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Alterar Chip para ter tamanhos diferentes (small, default). Definir uma cor de fundo padrão. Opção desabilitado. Opção sem ação e botão de remover -->
