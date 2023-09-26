@@ -11,56 +11,89 @@ import Icon from "@iconify/svelte";
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
-<div>
+<div class="h-full">
 	<div class="flex justify-between md:hidden">
 		<button class="text-orange-400 font-semibold">anterior</button>
 		<button class="text-orange-400 font-semibold">próximo</button>
 	</div>
 
-	<div class="mt-4">
+	<div class="flex flex-col justify-between gap-7 h-full mx-auto mt-4 max-w-2xl">
 		<!-- <div class="flex justify-center gap-1 mb-3">
 			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
 			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
 			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
 		</div> -->
 
-		<Splide hasTrack={ false }>
-			<SplideTrack style="min-height: 15rem">
-				{ #each ["https://picsum.photos/600/300", "https://picsum.photos/200/300"] as slide }
-					<SplideSlide>
-						<img src={ slide } alt={ slide } class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg">
-					</SplideSlide>
-				{ /each }
-			</SplideTrack>
-
-			<ul class="splide__pagination invisible"></ul>
-
-			<div class="splide__arrows">
-				<button class="splide__arrow splide__arrow--prev invisible !bg-transparent text-3xl md:visible md:left-[0.5em]">
-					<Icon icon="ph:caret-double-right" />
-				</button>
-
-				<button class="splide__arrow splide__arrow--next invisible !bg-transparent text-3xl md:visible md:right-[0.5em]">
-					<Icon icon="ph:caret-double-right" />
-				</button>
+		<div>
+			<Splide hasTrack={ false }>
+				<SplideTrack style="min-height: 15rem">
+					{ #each ["https://picsum.photos/600/300", "https://picsum.photos/200/300"] as slide }
+						<SplideSlide>
+							<img src={ slide } alt={ slide } class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg" />
+						</SplideSlide>
+					{ /each }
+				</SplideTrack>
+	
+				<ul class="splide__pagination invisible"></ul>
+	
+				<div class="splide__arrows">
+					<button class="splide__arrow splide__arrow--prev invisible !bg-transparent text-3xl md:visible !left-[0.5em] !lg:left-[1em]">
+						<Icon icon="ph:caret-double-right" />
+					</button>
+	
+					<button class="splide__arrow splide__arrow--next invisible !bg-transparent text-3xl md:visible !right-[0.5em] !lg:right-[1em]">
+						<Icon icon="ph:caret-double-right" />
+					</button>
+				</div>
+			</Splide>
+	
+			<div class="flex flex-col gap-4 items-center mt-4">
+				<p class="text-xl">Bolo de fubá</p>
+	
+				<div class="border-b border-b-orange-200 pb-4">
+					<Chip size="small" text="Romã" index={0} />
+					<Chip size="small" text="Romã" index={1} />
+					<Chip size="small" text="Romã" index={2} />
+					<Chip size="small" text="Romã" index={3} />
+				</div>
+				
+				<div>
+					<Chip size="small" text="Mexirica" isdisabled={true} />
+					<Chip size="small" text="Mexirica" isdisabled={true} />
+					<Chip size="small" text="Mexirica" isdisabled={true} />
+				</div>
 			</div>
-		</Splide>
+		</div>
 
-		<div class="flex flex-col gap-4 items-center mt-4">
-			<p class="text-xl">Bolo de fubá</p>
+		<div class="md:max-w-lg hidden md:flex flex-col mx-auto mb-6">
+			<button class="flex justify-center gap-6 px-2 mb-5 border-b border-neutral-300">
+				<p class="text-sm">Carnes</p>
+				<p class="text-sm text-blue-500 font-semibold">Sopas</p>
+				<p class="text-sm">Bolos e tortas doces</p>
+				<p class="text-sm">Carnes</p>
+				<p class="text-sm">Sopas</p>
+			</button>
 
-			<div class="border-b border-b-orange-200 pb-4">
-				<Chip size="small" text="Romã" index={0} />
-				<Chip size="small" text="Romã" index={1} />
-				<Chip size="small" text="Romã" index={2} />
-				<Chip size="small" text="Romã" index={3} />
-			</div>
-			
-			<div>
-				<Chip size="small" text="Mexirica" isdisabled={true} />
-				<Chip size="small" text="Mexirica" isdisabled={true} />
-				<Chip size="small" text="Mexirica" isdisabled={true} />
-				<Chip size="small" text="Mexirica" isdisabled={true} />
+			<div class="flex gap-4">
+				<div class="flex flex-col">
+					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
+					<p class="text-xs pl-2">Bolo de fubá</p>
+				</div>
+				
+				<div class="flex flex-col">
+					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
+					<p class="text-xs pl-2">Bolo de fubá</p>
+				</div>
+				
+				<div class="flex flex-col">
+					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
+					<p class="text-xs pl-2">Bolo de fubá</p>
+				</div>
+				
+				<div class="flex flex-col">
+					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
+					<p class="text-xs pl-2">Bolo de fubá</p>
+				</div>
 			</div>
 		</div>
 	</div>
