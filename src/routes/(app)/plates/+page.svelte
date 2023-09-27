@@ -17,7 +17,7 @@ import Icon from "@iconify/svelte";
 		<button class="text-orange-400 font-semibold">próximo</button>
 	</div>
 
-	<div class="flex flex-col justify-between gap-7 h-full mx-auto mt-4 max-w-2xl">
+	<div class="flex flex-col justify-between gap-7 h-full mt-4 max-w-4xl">
 		<!-- <div class="flex justify-center gap-1 mb-3">
 			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
 			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />

@@ -5,9 +5,13 @@
 	let foundedFoods: string[] = [];
 	let selectedFoods: string[] = ["manga", "laranja", "sal", "macarrão", "trigo", "miojo", "água", "tomate", "pêra", "salsisha", "alface", "farinha", "beterraba", "batata", "açafrão"];
 
-	const handleInputFoodValue = (event: Event & {
-		currentTarget: EventTarget & HTMLInputElement;
-	}) => {
+	const handleInputFoodValue = (event: Event & { currentTarget: EventTarget & HTMLInputElement; }) => {
+		const value = event.currentTarget.value;
+		if (/\d/g.test(value)) {
+			event.currentTarget.value = value.replace(/[\d]/g, "");
+			return;
+		}
+
 		foundedFoods = ["Abobrinha", "Abobrinha Abobrinha", "Abobrinha", "Abobrinha Abobrinha Abobrinha", "Abobrinha Abobrinha", "Abobrinha"];
 	};
 
@@ -22,15 +26,15 @@
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
 
-<div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10">
+<div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl">
 	<div>
 		<div class="flex flex-col max-w-[400px] mx-auto">
-			<label for="food-field" class="text-sm text-neutral-700">O que tem pra comer?</label>
+			<label for="food-field" class="text-neutral-700 mb-1">O que tem pra comer?</label>
 			<input
 				id="food-field"
+				on:input={handleInputFoodValue}
 				bind:value={foodValue}
 				on:blur={handleBlurFoodValue}
-				on:input={handleInputFoodValue}
 				class="shadow-lg text-base p-2 rounded border border-neutral-200"
 				placeholder="tomate, macarrão, leite..."
 			/>
