@@ -2,8 +2,12 @@
 	import Chip from "$lib/components/chip.svelte";
 
 	let foodValue = "";
-	let foundedFoods: string[] = [];
+	let foundFoods: string[] = [];
 	let selectedFoods: string[] = ["manga", "laranja", "sal", "macarrão", "trigo", "miojo", "água", "tomate", "pêra", "salsisha", "alface", "farinha", "beterraba", "batata", "açafrão"];
+
+	const getFoods = () => {
+		foundFoods = ["Abobrinha", "Abobrinha Abobrinha", "Abobrinha", "Abobrinha Abobrinha Abobrinha", "Abobrinha Abobrinha", "Abobrinha"];
+	};
 
 	const handleInputFoodValue = (event: Event & { currentTarget: EventTarget & HTMLInputElement; }) => {
 		const value = event.currentTarget.value;
@@ -12,14 +16,16 @@
 			event.currentTarget.value = value.replace(/[^A-Za-z]/g, "");
 			return;
 		}
-
-		foundedFoods = ["Abobrinha", "Abobrinha Abobrinha", "Abobrinha", "Abobrinha Abobrinha Abobrinha", "Abobrinha Abobrinha", "Abobrinha"];
+		
+		if (value.length > 2) {
+			getFoods();
+		}
 	};
 
 	const handleBlurFoodValue = (event: FocusEvent & {
 		currentTarget: EventTarget & HTMLInputElement;
 	}) => {
-		foundedFoods = [];
+		foundFoods = [];
 	};
 </script>
 
@@ -41,11 +47,11 @@
 			/>
 		</div>
 
-		{#if foundedFoods.length > 0}
+		{#if foundFoods.length > 0}
 			<div class="rounded shadow-lg mt-4">
 				<ul class="px-8 py-3 flex flex-col gap-2">
-					{#each foundedFoods as food}
-						<li class="pb-1 border-b border-neutral-200 last:border-b-0">
+					{#each foundFoods as food}
+						<li data-testid="found-food-item" class="pb-1 border-b border-neutral-200 last:border-b-0">
 							<button class="text-sm">{food}</button>
 						</li>
 					{/each}

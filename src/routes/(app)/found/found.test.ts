@@ -23,9 +23,14 @@ describe('Page found test', () => {
 		expect(input.value).toBe('Abobrinha');
 	});
 	
-	// it('Check if has at least three letters to get foods', () => {
-	// 	expect(true).toBe(true);
-	// });
+	it('Check if has at least three letters to get foods', async () => {
+		const { container } = render(FoundPage);
+		const input: HTMLInputElement = screen.getByLabelText("O que tem pra comer?");
+
+		await act(() => userEvent.type(input, "Abo"));
+
+		expect(container.querySelector("[data-testid='found-food-item']")).toBeTruthy();
+	});
 	
 	// it('Check if has maximum twelve found foods', () => {
 	// 	expect(true).toBe(true);
