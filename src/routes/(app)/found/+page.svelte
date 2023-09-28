@@ -7,8 +7,9 @@
 
 	const handleInputFoodValue = (event: Event & { currentTarget: EventTarget & HTMLInputElement; }) => {
 		const value = event.currentTarget.value;
-		if (/\d/g.test(value)) {
-			event.currentTarget.value = value.replace(/[\d]/g, "");
+
+		if (/[^A-Za-z]/g.test(value)) {
+			event.currentTarget.value = value.replace(/[^A-Za-z]/g, "");
 			return;
 		}
 
