@@ -4,9 +4,14 @@
     export let size: "default" | "small" = "default";
     export let text: string;
     export let index: number = 0;
-    export let isRemoved: boolean = false;
-    export let isdisabled: boolean = false;
     export let onRemove: (() => void) | undefined = undefined;
+    export let isdisabled: boolean = false;
+
+    let isRemoved: boolean = false;
+
+    $: if (onRemove) {
+        isRemoved = true;
+    }
 
     const rainbow: string[] = [
         'bg-orange-100',

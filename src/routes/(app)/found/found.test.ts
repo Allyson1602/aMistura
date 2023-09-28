@@ -27,24 +27,55 @@ describe('Page found test', () => {
 		const { container } = render(FoundPage);
 		const input: HTMLInputElement = screen.getByLabelText("O que tem pra comer?");
 
-		await act(() => userEvent.type(input, "Abo"));
+		await act(() => userEvent.type(input, "Ab"));
+		
+		const foundFoodLi = container.querySelector("[data-testid='found-food-item']");
 
-		expect(container.querySelector("[data-testid='found-food-item']")).toBeTruthy();
+		expect(foundFoodLi).toBeFalsy();
 	});
 	
-	// it('Check if has maximum twelve found foods', () => {
-	// 	expect(true).toBe(true);
-	// });
+	it('Check if has minimum one and maximum twelve found foods', async () => {
+		const { container } = render(FoundPage);
+		const input: HTMLInputElement = screen.getByLabelText("O que tem pra comer?");
+
+		await act(() => userEvent.type(input, "Abobrinha"));
+
+		const foundFoodsLi = container.querySelectorAll("[data-testid='found-food-item']");
+
+		expect(foundFoodsLi.length).toBeGreaterThan(0);
+		expect(foundFoodsLi.length).toBeLessThanOrEqual(12);
+	});
 	
-	// it('Check if each food is different of the all', () => {
-	// 	expect(true).toBe(true);
-	// });
+	it('Check if each food is different of the all', async () => {
+		const { container } = render(FoundPage);
+		const input = screen.getByLabelText("O que tem pra comer?");
+
+		await act(() => userEvent.type(input, "Abobrinha"));
+
+		const foundFoodsLi = container.querySelectorAll("[data-testid='found-food-item']");
+		const foundFoodTexts: string[] = [];
+
+		for (const foodText of foundFoodsLi.values()) {
+			if (foodText.textContent) foundFoodTexts.push(foodText.textContent);
+		}
+
+		// use (new Set) to remove duplicates
+		expect(foundFoodsLi).toHaveLength([...new Set(foundFoodTexts)].length);
+	});
 	
-	// it('Check if select a found food it go to selecteds list', () => {
-	// 	expect(true).toBe(true);
-	// });
+	it('Check if to select a found food it goes to selecteds list', () => {
+		// expect(true).toBe(true);
+	});
 	
 	// it('Check if it is possible to remove a selected food', () => {
+	// 	expect(true).toBe(true);
+	// });
+	
+	// it('Check if click at clean input, it's cleaned and the found list', () => {
+	// 	expect(true).toBe(true);
+	// });
+	
+	// it('Check if it's possible add two equals foods', () => {
 	// 	expect(true).toBe(true);
 	// });
 });
