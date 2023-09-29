@@ -65,7 +65,7 @@
 	};
 </script>
 
-<button on:click={handleRemoveChip} disabled={isdisabled}>
+<button data-testid="remove-food" on:click={handleRemoveChip} disabled={isdisabled}>
     <div class={getBgColor() + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
         {#if isRemoved}
             <span class="absolute right-[-5px] top-[-5px]">

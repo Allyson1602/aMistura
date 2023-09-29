@@ -79,7 +79,7 @@
 				<ul class="grid grid-cols-2 gap-2 px-8 py-3">
 					{#each foundFoods as food}
 						<li data-testid="found-food-item" class="pb-1 border-b border-neutral-200">
-							<button class="text-sm" on:click={() => handleClickAddFood(food)}>{food}</button>
+							<button data-testid="add-food" class="text-sm pl-1 border-l-2 border-l-transparent hover:border-orange-400" on:click={() => handleClickAddFood(food)}>{food}</button>
 						</li>
 					{/each}
 				</ul>
@@ -92,7 +92,7 @@
 			<h3 class="text-xl text-orange-400 font-bold">Selecionados:</h3>
 
 			{#if selectedFoods.length > 0}
-				<div class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
+				<div data-testid="selected-foods" class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
 					{#each selectedFoods as food, index (food)}
 						<Chip text={food} index={index} onRemove={() => handleClickRemoveChip(food)} />
 					{/each}
