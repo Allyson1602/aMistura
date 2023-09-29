@@ -13,6 +13,10 @@
         isRemoved = true;
     }
 
+    $: if (isdisabled) {
+        onRemove = undefined;
+    }
+
     const rainbow: string[] = [
         'bg-orange-100',
         'bg-orange-200',
@@ -65,7 +69,12 @@
 	};
 </script>
 
-<button data-testid="remove-food" on:click={handleRemoveChip} disabled={isdisabled}>
+<button
+    data-testid="remove-food"
+    on:click={handleRemoveChip}
+    disabled={isdisabled}
+    class={isRemoved ? "cursor-pointer" : "cursor-auto"}
+>
     <div class={getBgColor() + " inline-block relative py-1 px-3 rounded-2xl text-sm"}>
         {#if isRemoved}
             <span class="absolute right-[-5px] top-[-5px]">
