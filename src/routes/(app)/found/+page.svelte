@@ -73,7 +73,7 @@
 					placeholder="tomate, macarrão, leite..."
 				/>
 
-				{#if foodValue}
+				{#if foodValue || foundFoods.length > 0}
 					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
 						<Icon icon="ph:x-circle-bold" class="text-neutral-400 hover:text-neutral-600 cursor-pointer" width="20" height="20" />
 					</button>
@@ -91,6 +91,10 @@
 					{/each}
 				</ul>
 			</div>
+		{:else}
+			<div class="mt-4">
+				<p class="py-1 text-sm text-center font-light text-neutral-400">Alimentos buscados apareceram aqui</p>
+			</div>
 		{/if}
 	</div>
 
@@ -103,6 +107,10 @@
 					{#each selectedFoods as food, index (food)}
 						<Chip text={food.name} index={index} onRemove={() => handleClickRemoveChip(food)} />
 					{/each}
+				</div>
+			{:else}
+				<div class="mt-4 md:justify-start">
+					<p class="py-1 text-sm text-center font-light text-neutral-400">Nenhum alimento selecionado</p>
 				</div>
 			{/if}
 		</div>
