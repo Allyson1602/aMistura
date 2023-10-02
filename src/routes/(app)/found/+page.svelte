@@ -1,25 +1,32 @@
 <script lang="ts">
 	import Chip from "$lib/components/chip.svelte";
+	import foodService from "$services/food.service";
 	import Icon from "@iconify/svelte";
+	import type { IFood } from "src/models/food.model";
 
 	let foodValue = "";
-	let foundFoods: string[] = [];
-	let selectedFoods: string[] = [];
+	let foundFoods: IFood[] = [];
+	let selectedFoods: IFood[] = [];
 
 	const cleanField = (): void => {
 		foodValue = "";
 		foundFoods = [];
 	};
 
-	const getFoods = () => {
-		let foodsMock = [...new Set(["manga", "laranja", "sal", "macarrão", "trigo", "miojo", "água", "tomate", "pêra", "salsisha", "alface", "farinha", "beterraba", "batata", "açafrão"])];
-		
-		if (foodsMock.length > 12) {
-			foundFoods = foodsMock.slice(0, 12);
-			return;
-		}
+	const getFoods = async (): Promise<void> => {
+		await foodService.getFood().then((response) => {
+			let newFoods: IFood[] = [];
 
-		foundFoods = foodsMock;
+			if (response.status === 200 && response.data) {
+				newFoods = [...new Set(response.data)];
+			}
+		
+			if (newFoods.length > 12) {
+				newFoods = newFoods.slice(0, 12);
+			}
+
+			foundFoods = newFoods;
+		});
 	};
 
 	const handleInputFoodValue = (event: Event & { currentTarget: EventTarget & HTMLInputElement; }) => {
@@ -35,16 +42,16 @@
 		}
 	};
 
-	const handleClickAddFood = (selectedFood: string) => {
-		if (selectedFoods.some(selectedItem => selectedItem === selectedFood)) return;
+	const handleClickAddFood = (selectedFood: IFood) => {
+		if (selectedFoods.some(selectedItem => selectedItem.id === selectedFood.id)) return;
 
 		selectedFoods = [...selectedFoods, selectedFood];
-		foundFoods = foundFoods.filter(foodItem => foodItem !== selectedFood);
+		foundFoods = foundFoods.filter(foodItem => foodItem.id !== selectedFood.id);
 	};
 
-	const handleClickRemoveChip = (foodName: string) => {
-		foundFoods = [...foundFoods, foodName];
-		selectedFoods = selectedFoods.filter(selectedItem => selectedItem !== foodName);
+	const handleClickRemoveChip = (selectedFood: IFood) => {
+		foundFoods = [...foundFoods, selectedFood];
+		selectedFoods = selectedFoods.filter(selectedItem => selectedItem.id !== selectedFood.id);
 	};
 </script>
 
@@ -79,7 +86,7 @@
 				<ul class="grid grid-cols-2 gap-2 px-8 py-3">
 					{#each foundFoods as food}
 						<li data-testid="found-food-item" class="pb-1 border-b border-neutral-200">
-							<button data-testid="add-food" class="text-sm pl-1 border-l-2 border-l-transparent hover:border-orange-400" on:click={() => handleClickAddFood(food)}>{food}</button>
+							<button data-testid="add-food" class="text-sm pl-1 border-l-2 border-l-transparent hover:border-orange-400" on:click={() => handleClickAddFood(food)}>{food.name}</button>
 						</li>
 					{/each}
 				</ul>
@@ -94,7 +101,7 @@
 			{#if selectedFoods.length > 0}
 				<div data-testid="selected-foods" class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
 					{#each selectedFoods as food, index (food)}
-						<Chip text={food} index={index} onRemove={() => handleClickRemoveChip(food)} />
+						<Chip text={food.name} index={index} onRemove={() => handleClickRemoveChip(food)} />
 					{/each}
 				</div>
 			{/if}

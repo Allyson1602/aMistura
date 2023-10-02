@@ -1,7 +1,5 @@
-import type { AxiosResponse } from "axios";
-import axiosInstance from "src/configs/axios.config";
-
-export type IReturnStatus<T> = Promise<AxiosResponse<T>>;
+import type { IReturnStatus } from "$lib/types";
+import axiosInstance from "$configs/axios.config";
 
 export class ApiBase<T> {
     protected get(url: string, queryParams?: object): IReturnStatus<T> {
