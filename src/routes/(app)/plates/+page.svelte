@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Chip from "$lib/components/chip.svelte";
-import Icon from "@iconify/svelte";
+	import Icon from "@iconify/svelte";
 	import { Splide, SplideSlide, SplideTrack } from "@splidejs/svelte-splide";
 	import "@splidejs/svelte-splide/css";
 	import "@splidejs/svelte-splide/css";
@@ -18,12 +18,6 @@ import Icon from "@iconify/svelte";
 	</div>
 
 	<div class="flex flex-col justify-between gap-7 h-full mt-4 max-w-4xl">
-		<!-- <div class="flex justify-center gap-1 mb-3">
-			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
-			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
-			<Icon icon="ph:star-fill" class="text-yellow-400" width="23" height="23" />
-		</div> -->
-
 		<div>
 			<Splide hasTrack={ false }>
 				<SplideTrack style="min-height: 15rem">
