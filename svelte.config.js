@@ -9,6 +9,7 @@ const config = {
 		alias: {
 			"$services": "src/services/*",
 			"$configs": "src/configs/*",
+			"$stores": "src/stores/*",
 		},
 	}
 };

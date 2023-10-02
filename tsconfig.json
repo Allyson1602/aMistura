@@ -22,7 +22,10 @@
 			],
 			"$configs/*": [
 				"./src/configs/*",
-			]
+			],
+			"$stores/*": [
+				"./src/stores/*"
+			],
 		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias

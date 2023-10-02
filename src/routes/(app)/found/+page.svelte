@@ -1,16 +1,15 @@
 <script lang="ts">
 	import Chip from "$lib/components/chip.svelte";
 	import foodService from "$services/food.service";
+	import { foodList, selectedFoods } from "$stores/food";
 	import Icon from "@iconify/svelte";
 	import type { IFood } from "src/models/food.model";
 
 	let foodValue = "";
-	let foundFoods: IFood[] = [];
-	let selectedFoods: IFood[] = [];
 
 	const cleanField = (): void => {
 		foodValue = "";
-		foundFoods = [];
+		foodList.set([]);
 	};
 
 	const getFoods = async (): Promise<void> => {
@@ -25,7 +24,7 @@
 				newFoods = newFoods.slice(0, 12);
 			}
 
-			foundFoods = newFoods;
+			foodList.set(newFoods);
 		});
 	};
 
@@ -42,16 +41,16 @@
 		}
 	};
 
-	const handleClickAddFood = (selectedFood: IFood) => {
-		if (selectedFoods.some(selectedItem => selectedItem.id === selectedFood.id)) return;
+	const handleClickAddFood = (newFood: IFood) => {
+		if ($selectedFoods.some(selectedItem => selectedItem.id === newFood.id)) return;
 
-		selectedFoods = [...selectedFoods, selectedFood];
-		foundFoods = foundFoods.filter(foodItem => foodItem.id !== selectedFood.id);
+		selectedFoods.update((foods) => [...foods, newFood]);
+		foodList.update((foods) => foods.filter(foodItem => foodItem.id !== newFood.id));
 	};
 
-	const handleClickRemoveChip = (selectedFood: IFood) => {
-		foundFoods = [...foundFoods, selectedFood];
-		selectedFoods = selectedFoods.filter(selectedItem => selectedItem.id !== selectedFood.id);
+	const handleClickRemoveChip = (newFood: IFood) => {
+		foodList.update((foods) => [...foods, newFood]);
+		selectedFoods.update((foods) => foods.filter(foodItem => foodItem.id !== newFood.id));
 	};
 </script>
 
@@ -73,7 +72,7 @@
 					placeholder="tomate, macarrão, leite..."
 				/>
 
-				{#if foodValue || foundFoods.length > 0}
+				{#if foodValue || $foodList.length > 0}
 					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
 						<Icon icon="ph:x-circle-bold" class="text-neutral-400 hover:text-neutral-600 cursor-pointer" width="20" height="20" />
 					</button>
@@ -81,10 +80,10 @@
 			</div>
 		</div>
 
-		{#if foundFoods.length > 0}
+		{#if $foodList.length > 0}
 			<div class="rounded shadow-lg mt-4">
 				<ul class="grid grid-cols-2 gap-2 px-8 py-3">
-					{#each foundFoods as food}
+					{#each $foodList as food}
 						<li data-testid="found-food-item" class="pb-1 border-b border-neutral-200">
 							<button data-testid="add-food" class="text-sm pl-1 border-l-2 border-l-transparent hover:border-orange-400" on:click={() => handleClickAddFood(food)}>{food.name}</button>
 						</li>
@@ -102,9 +101,9 @@
 		<div>
 			<h3 class="text-lg text-orange-400">Selecionados:</h3>
 
-			{#if selectedFoods.length > 0}
+			{#if $selectedFoods.length > 0}
 				<div data-testid="selected-foods" class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
-					{#each selectedFoods as food, index (food)}
+					{#each $selectedFoods as food, index (food)}
 						<Chip text={food.name} index={index} onRemove={() => handleClickRemoveChip(food)} />
 					{/each}
 				</div>
@@ -117,8 +116,8 @@
 
 		<div class="flex justify-center mt-3">
 			<a
-				href={selectedFoods.length > 0 ? "/plates" : undefined}
-				class={`w-80 rounded-full md:self-center p-1 text-xl mx-auto font-semibold text-white text-center bg-orange-400 ${selectedFoods.length === 0 && "!bg-neutral-300"}`}
+				href={$selectedFoods.length > 0 ? "/plates" : undefined}
+				class={`w-80 rounded-full md:self-center p-1 text-xl mx-auto font-semibold text-white text-center bg-orange-400 ${$selectedFoods.length === 0 && "!bg-neutral-300"}`}
 			>pegar receitas</a>
 		</div>
 	</div>
