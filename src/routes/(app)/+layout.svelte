@@ -2,12 +2,14 @@
 	import Menu from '$lib/components/menu.svelte';
 	import Icon from '@iconify/svelte';
 	import '../styles.css';
+
+	export let data;
 </script>
 
 <div class="app">
 	<div class="h-screen flex flex-col justify-between">
 		<main class="grow flex flex-col md:flex-row">
-			<Menu />
+			<Menu route={data.route.id} />
 	
 			<div class="p-5 grow">
 				<slot />

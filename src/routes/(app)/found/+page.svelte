@@ -61,8 +61,8 @@
 
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl">
 	<div>
-		<div class="flex flex-col max-w-[400px] mx-auto">
-			<label for="food-field" class="text-neutral-700 mb-1">O que tem pra comer?</label>
+		<div class="flex flex-col max-w-[400px] mx-auto mt-4">
+			<label for="food-field" class="mb-1 text-orange-400 font-semibold">Busque seus alimentos aqui:</label>
 
 			<div class="relative">
 				<input
@@ -100,7 +100,7 @@
 
 	<div class="flex flex-col mt-4">
 		<div>
-			<h3 class="text-xl text-orange-400 font-bold">Selecionados:</h3>
+			<h3 class="text-lg text-orange-400">Selecionados:</h3>
 
 			{#if selectedFoods.length > 0}
 				<div data-testid="selected-foods" class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">
