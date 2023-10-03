@@ -10,6 +10,7 @@ const config = {
 			"$services": "src/services/*",
 			"$configs": "src/configs/*",
 			"$stores": "src/stores/*",
+			"$tailwind": "tailwind.config.js",
 		},
 	}
 };
