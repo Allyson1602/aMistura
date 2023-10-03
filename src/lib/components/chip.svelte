@@ -72,7 +72,7 @@
 </script>
 
 <button
-    data-testid="remove-food"
+    data-testid="chip-button"
     on:click={handleRemoveChip}
     disabled={isdisabled}
     class={isRemoved ? "cursor-pointer" : "cursor-auto"}

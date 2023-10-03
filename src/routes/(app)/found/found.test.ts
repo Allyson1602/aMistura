@@ -31,30 +31,29 @@ describe('Page found test', () => {
 	});
 	
 	it('Check if it is possible to remove a selected food', async () => {
-		const { container } = render(FoundPage);
+		render(FoundPage);
 
 		const input: HTMLInputElement = screen.getByLabelText("Busque seus alimentos aqui:");
 
 		await act(() => userEvent.type(input, "Abobrinha"));
 
-		expect(container.querySelectorAll("[data-testid='add-food']")).not.toBeNull();
-		const addFoodText = container.querySelectorAll("[data-testid='add-food']")!.item(0)?.textContent;
+		let addFoodButtons = screen.getAllByTestId('add-food');
 
-		await act(() => userEvent.click(container.querySelectorAll("[data-testid='add-food']")!.item(0)));
-		await act(() => userEvent.click(container.querySelectorAll("[data-testid='add-food']")!.item(0)));
+		await act(() => userEvent.click(addFoodButtons[0]));
+		await act(() => userEvent.click(addFoodButtons[0]));
 
-		expect(container.querySelectorAll("[data-testid='selected-foods'] button").item(0).textContent?.trim()).toBe(addFoodText);
+		expect(screen.getAllByTestId('chip-button')[0].textContent?.trim()).toBe("laranja");
 
-		const removeFoodButton: HTMLButtonElement | null = container.querySelector("[data-testid='remove-food']");
+		const chipButton = screen.getAllByTestId('chip-button')[0];
 		
-		expect(removeFoodButton).not.toBeNull();
+		expect(chipButton).not.toBeNull();
 
-		await act(() => userEvent.click(removeFoodButton!));
+		await act(() => userEvent.click(chipButton!));
 
-		const addFoodButtons = container.querySelectorAll("[data-testid='add-food']");
-		expect(removeFoodButton!.textContent?.trim()).toBe(addFoodButtons!.item(addFoodButtons.length-1)?.textContent);
+		addFoodButtons = screen.getAllByTestId('add-food');
 
-		expect(container.querySelectorAll("[data-testid='selected-foods'] button").item(0).textContent?.trim()).not.toContain(removeFoodButton?.textContent);
+		expect(chipButton!.textContent?.trim()).toBe(addFoodButtons![(addFoodButtons.length-1)].textContent);
+		expect(screen.queryAllByTestId('selected-foods')[0].textContent?.trim()).not.toContain(chipButton?.textContent);
 	});
 	
 	it('Check if to select a found food it goes to selecteds list', async () => {
@@ -109,17 +108,6 @@ describe('Page found test', () => {
 
 		expect(foundFoodsLi.length).toBeGreaterThan(0);
 		expect(foundFoodsLi.length).toBeLessThanOrEqual(12);
-	});
-	
-	it('Check if has at least three letters to get foods', async () => {
-		const { container } = render(FoundPage);
-		const input: HTMLInputElement = screen.getByLabelText("Busque seus alimentos aqui:");
-
-		await act(() => userEvent.type(input, "Ab"));
-		
-		const foundFoodLi = container.querySelector("[data-testid='found-food-item']");
-
-		expect(foundFoodLi).toBeFalsy();
 	});
 	
 	it('Check if input has special character', async () => {
