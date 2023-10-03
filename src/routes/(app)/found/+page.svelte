@@ -99,7 +99,7 @@
 
 	<div class="flex flex-col mt-4">
 		<div>
-			<h3 class="text-lg text-orange-400">Selecionados:</h3>
+			<h3 class="text-orange-400">Selecionados:</h3>
 
 			{#if $selectedFoods.length > 0}
 				<div data-testid="selected-foods" class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start">

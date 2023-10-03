@@ -4,6 +4,116 @@
 	import { Splide, SplideSlide, SplideTrack } from "@splidejs/svelte-splide";
 	import "@splidejs/svelte-splide/css";
 	import "@splidejs/svelte-splide/css";
+	import type { IPlate } from "src/models/plate.model";
+
+	let currentPlate = 0;
+	let currentCategory = 0;
+
+	const plates: IPlate[] = [
+		{
+			id: 1,
+			name: "Bolo de fubá",
+			image: "https://picsum.photos/600/300",
+			includedFoods: [],
+			requiredFoods: [],
+			categories: []
+		},
+		{
+			id: 2,
+			name: "Torta de limão",
+			image: "https://picsum.photos/200/300",
+			includedFoods: [
+				{
+					id: 1,
+					image: "",
+					name: "Limão"
+				},
+				{
+					id: 2,
+					image: "",
+					name: "Trigo"
+				},
+				{
+					id: 3,
+					image: "",
+					name: "Aveia"
+				},
+			],
+			requiredFoods: [
+				{
+					id: 1,
+					image: "",
+					name: "Hortelã"
+				},
+				{
+					id: 2,
+					image: "",
+					name: "Tomate"
+				},
+				{
+					id: 3,
+					image: "",
+					name: "Sardinha"
+				},
+			],
+			categories: [
+				{
+					id: 1,
+					name: "Carnes",
+					plates: [
+						{
+							id: 1,
+							image: "https://picsum.photos/300/300",
+							name: "Escondidinho de carne"
+						},
+						{
+							id: 2,
+							image: "https://picsum.photos/400/400",
+							name: "Estrogonoffe"
+						},
+						{
+							id: 3,
+							image: "https://picsum.photos/500/500",
+							name: "Hamburguer"
+						},
+					]
+				},
+				{
+					id: 2,
+					name: "Vegetais",
+					plates: [
+						{
+							id: 1,
+							image: "https://picsum.photos/600/600",
+							name: "Salada de tomate"
+						},
+						{
+							id: 2,
+							image: "https://picsum.photos/700/700",
+							name: "Verduras no vapor"
+						},
+						{
+							id: 3,
+							image: "https://picsum.photos/800/800",
+							name: "Verduras no churrasco"
+						},
+					]
+				}
+			]
+		}
+	];
+
+	const handleClickPrevious = () => {
+		currentPlate --;
+	};
+
+	const handleClickNext = () => {
+		currentPlate ++;
+	};
+
+	const handleClickCategory = (index: number) => {
+		currentCategory = index;
+	};
 </script>
 
 <svelte:head>
@@ -13,82 +123,70 @@
 
 <div class="h-full">
 	<div class="flex justify-between md:hidden">
-		<button class="text-orange-400 font-semibold">anterior</button>
-		<button class="text-orange-400 font-semibold">próximo</button>
+		<button on:click={handleClickPrevious} class="text-orange-400 font-semibold">anterior</button>
+		<button on:click={handleClickNext} class="text-orange-400 font-semibold">próximo</button>
 	</div>
 
 	<div class="flex flex-col justify-between gap-7 h-full mt-4 max-w-4xl">
 		<div>
 			<Splide hasTrack={ false }>
 				<SplideTrack style="min-height: 15rem">
-					{ #each ["https://picsum.photos/600/300", "https://picsum.photos/200/300"] as slide }
+					{#each plates as plate}
 						<SplideSlide>
-							<img src={ slide } alt={ slide } class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg" />
+							<img src={plate.image} alt={plate.name} class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg" />
 						</SplideSlide>
-					{ /each }
+					{/each}
 				</SplideTrack>
 	
 				<ul class="splide__pagination invisible"></ul>
 	
 				<div class="splide__arrows">
-					<button class="splide__arrow splide__arrow--prev invisible !bg-transparent text-3xl md:visible !left-[0.5em] !lg:left-[1em]">
+					<button on:click={handleClickPrevious} class="splide__arrow splide__arrow--prev invisible !bg-transparent text-3xl md:visible !left-[0.5em] !lg:left-[1em]">
 						<Icon icon="ph:caret-double-right" />
 					</button>
 	
-					<button class="splide__arrow splide__arrow--next invisible !bg-transparent text-3xl md:visible !right-[0.5em] !lg:right-[1em]">
+					<button on:click={handleClickNext} class="splide__arrow splide__arrow--next invisible !bg-transparent text-3xl md:visible !right-[0.5em] !lg:right-[1em]">
 						<Icon icon="ph:caret-double-right" />
 					</button>
 				</div>
 			</Splide>
 	
 			<div class="flex flex-col gap-4 items-center mt-4">
-				<p class="text-xl">Bolo de fubá</p>
+				<p class="text-xl">{plates[currentPlate].name}</p>
 	
-				<div class="border-b border-b-orange-200 pb-4">
-					<Chip size="small" text="Romã" index={0} />
-					<Chip size="small" text="Romã" index={1} />
-					<Chip size="small" text="Romã" index={2} />
-					<Chip size="small" text="Romã" index={3} />
+				<div class="flex gap-1">
+					{#each plates[currentPlate].includedFoods as chip, index}
+						<Chip size="small" text={chip.name} index={index} />
+					{/each}
 				</div>
 				
-				<div>
-					<Chip size="small" text="Mexirica" isdisabled={true} />
-					<Chip size="small" text="Mexirica" isdisabled={true} />
-					<Chip size="small" text="Mexirica" isdisabled={true} />
-				</div>
+				{#if plates[currentPlate].requiredFoods.length > 0}
+					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
+						{#each plates[currentPlate].requiredFoods as chip}
+							<Chip size="small" text={chip.name} isdisabled />
+						{/each}
+					</div>
+				{/if}
 			</div>
 		</div>
 
-		<div class="md:max-w-lg hidden md:flex flex-col mx-auto mb-6">
-			<button class="flex justify-center gap-6 px-2 mb-5 border-b border-neutral-300">
-				<p class="text-sm">Carnes</p>
-				<p class="text-sm text-blue-500 font-semibold">Sopas</p>
-				<p class="text-sm">Bolos e tortas doces</p>
-				<p class="text-sm">Carnes</p>
-				<p class="text-sm">Sopas</p>
-			</button>
+		{#if plates[currentPlate].categories.length > 0}
+			<div class="md:max-w-lg hidden md:flex flex-col mx-auto mb-6">
+				<div class="flex justify-center gap-6 px-2 mb-5 border-b border-neutral-300">
+					{#each plates[currentPlate].categories as category, index}
+						<button on:click={() => handleClickCategory(index)} class="text-sm">{category.name}</button>
+					{/each}
+				</div>
 
-			<div class="flex gap-4">
-				<div class="flex flex-col">
-					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
-					<p class="text-xs pl-2">Bolo de fubá</p>
-				</div>
-				
-				<div class="flex flex-col">
-					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
-					<p class="text-xs pl-2">Bolo de fubá</p>
-				</div>
-				
-				<div class="flex flex-col">
-					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
-					<p class="text-xs pl-2">Bolo de fubá</p>
-				</div>
-				
-				<div class="flex flex-col">
-					<img src="https://picsum.photos/600/300" alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
-					<p class="text-xs pl-2">Bolo de fubá</p>
+				<div class="flex gap-4">
+					{#each plates[currentPlate].categories[currentCategory].plates as plate}
+						<div class="flex flex-col items-center">
+							<img src={plate.image} alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
+							<p class="text-xs pl-2">{plate.name}</p>
+						</div>
+					{/each}
 				</div>
 			</div>
-		</div>
+		{/if}
 	</div>
 </div>

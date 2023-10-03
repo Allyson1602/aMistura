@@ -9,3 +9,9 @@ export interface IPlate {
     requiredFoods: IFood[];
     categories: ICategory[];
 }
+
+export interface IBasicPlate {
+    id: number;
+    name: string;
+    image: string;
+}

@@ -1,7 +1,7 @@
-import type { IFood } from "./food.model";
+import type { IBasicPlate } from "./plate.model";
 
 export interface ICategory {
     id: number;
     name: string;
-    foods: IFood[];
+    plates: IBasicPlate[];
 }
