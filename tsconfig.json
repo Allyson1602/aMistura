@@ -29,7 +29,7 @@
 			"$stores/*": [
 				"./src/stores/*"
 			],
-			"$tailwind/*": [
+			"$tailwind": [
 				"./tailwind.config.js"
 			],
 		}
