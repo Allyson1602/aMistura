@@ -7,6 +7,7 @@
 	import type { MoveEventDetail } from "@splidejs/svelte-splide/types";
 	import resolveConfig from "tailwindcss/resolveConfig";
 	import tailwindConfig from "../../../../tailwind.config";
+	import { plateList } from "$stores/plate";
 
 	const breakpoints = resolveConfig(tailwindConfig).theme?.screens as any;
 	const breakPointMd = parseInt(breakpoints.md.replace('px', ''));
@@ -39,7 +40,7 @@
 		<div>
 			<Splide hasTrack={false} on:move={handleMoveCarousel}>
 				<SplideTrack style="min-height: 15rem">
-					{#each plates as plate}
+					{#each $plateList as plate}
 						<SplideSlide>
 							<img src={plate.image} alt={plate.name} class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md max-w-full md:max-w-lg" />
 						</SplideSlide>
@@ -72,17 +73,17 @@
 			</Splide>
 	
 			<div class="flex flex-col gap-4 items-center mt-4">
-				<p class="text-xl">{plates[currentPlate].name}</p>
+				<p class="text-xl">{$plateList[currentPlate].name}</p>
 	
 				<div class="flex gap-1">
-					{#each plates[currentPlate].includedFoods as chip, index}
+					{#each $plateList[currentPlate].includedFoods as chip, index}
 						<Chip size="small" text={chip.name} index={index} />
 					{/each}
 				</div>
 				
-				{#if plates[currentPlate].requiredFoods.length > 0}
+				{#if $plateList[currentPlate].requiredFoods.length > 0}
 					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
-						{#each plates[currentPlate].requiredFoods as chip}
+						{#each $plateList[currentPlate].requiredFoods as chip}
 							<Chip size="small" text={chip.name} isdisabled />
 						{/each}
 					</div>
@@ -90,16 +91,16 @@
 			</div>
 		</div>
 
-		{#if plates[currentPlate].categories.length > 0}
+		{#if $plateList[currentPlate].categories.length > 0}
 			<div class="md:max-w-lg hidden md:flex flex-col mx-auto mb-6">
 				<div class="flex justify-center gap-6 px-2 mb-5 border-b border-neutral-300">
-					{#each plates[currentPlate].categories as category, index}
+					{#each $plateList[currentPlate].categories as category, index}
 						<button on:click={() => handleClickCategory(index)} class="text-sm">{category.name}</button>
 					{/each}
 				</div>
 
 				<div class="flex gap-4">
-					{#each plates[currentPlate].categories[currentCategory].plates as plate}
+					{#each $plateList[currentPlate].categories[currentCategory].plates as plate}
 						<div class="flex flex-col items-center">
 							<img src={plate.image} alt="Imagem de opção de prato" class="w-24 max-x-w-24 object-contain mb-1 rounded-md shadow-md" />
 							<p class="text-xs pl-2">{plate.name}</p>
