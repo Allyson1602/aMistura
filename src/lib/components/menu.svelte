@@ -9,26 +9,26 @@
 
     $: active = route.slice(route.lastIndexOf('/'));
 
-    // const getPlateLink = (): Map<string, string | undefined> => {
-    //     const plateLink = new Map<string, string | undefined>();
+    const getPlateLink = (linkName: string): Map<string, string | undefined> => {
+        const plateLink = new Map<'name' | 'classes', string | undefined>();
 
-    //     if (active === '/plates') {
-    //         plateLink.set('name', undefined);
-    //         plateLink.set('classes', "text-orange-600");
-
-    //         return plateLink;
-
-    //     } else if ($plateList.length < 1) {
-    //         plateLink.set('name', undefined);
-    //         plateLink.set('classes', "text-neutral-300");
-
-    //         return plateLink;
-    //     }
+        plateLink.set('name', undefined);
         
-    //     plateLink.set('name', "/plates");
-    //     plateLink.set('classes', "text-neutral-600 hover:text-orange-400");
-    //     return plateLink;
-    // };
+        if (linkName === '/plates') {
+            plateLink.set('classes', "text-orange-600");
+
+            return plateLink;
+
+        } else if ($plateList.length < 1) {
+            plateLink.set('classes', "text-neutral-600/30");
+
+            return plateLink;
+        }
+        
+        plateLink.set('name', "/plates");
+        plateLink.set('classes', "text-neutral-600 hover:text-orange-400");
+        return plateLink;
+    };
 
     const handleClickMenu = () => {
         isExpanded = !isExpanded;
@@ -83,7 +83,7 @@
             <Icon icon="ph:magnifying-glass-bold" width="35" height="35" />
         </a>
 
-        <a href={active !== "/plates" ? "/plates" : undefined} class={`${active === '/plates' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'} ease-linear`}>
+        <a href={getPlateLink(active).get('name')} class={`${getPlateLink(active).get('classes')} ease-linear`}>
             <Icon icon="ph:bowl-food-bold" width="35" height="35" />
         </a>
     </nav>
