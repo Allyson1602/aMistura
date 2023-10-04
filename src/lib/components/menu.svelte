@@ -1,13 +1,34 @@
 <script lang="ts">
     import Icon from "@iconify/svelte";
 	import BrandImage from "$lib/images/brand.png";
-	import { onMount } from "svelte";
+	import { plateList } from "$stores/plate.store";
 
     export let route: string;
 
     let isExpanded = false;
 
     $: active = route.slice(route.lastIndexOf('/'));
+
+    // const getPlateLink = (): Map<string, string | undefined> => {
+    //     const plateLink = new Map<string, string | undefined>();
+
+    //     if (active === '/plates') {
+    //         plateLink.set('name', undefined);
+    //         plateLink.set('classes', "text-orange-600");
+
+    //         return plateLink;
+
+    //     } else if ($plateList.length < 1) {
+    //         plateLink.set('name', undefined);
+    //         plateLink.set('classes', "text-neutral-300");
+
+    //         return plateLink;
+    //     }
+        
+    //     plateLink.set('name', "/plates");
+    //     plateLink.set('classes', "text-neutral-600 hover:text-orange-400");
+    //     return plateLink;
+    // };
 
     const handleClickMenu = () => {
         isExpanded = !isExpanded;

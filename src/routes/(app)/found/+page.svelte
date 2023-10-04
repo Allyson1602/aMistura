@@ -6,11 +6,12 @@
 	import type { IFood } from "$models/food.model";
 	import { plateList } from "$stores/plate.store";
 	import plateService from "$services/plate.service";
+	import { goto } from "$app/navigation";
 
-	let foodValue = "";
+	let foodValue = '';
 
 	const cleanField = (): void => {
-		foodValue = "";
+		foodValue = '';
 		foodList.set([]);
 	};
 
@@ -63,8 +64,12 @@
 		selectedFoods.update((foods) => foods.filter(foodItem => foodItem.id !== newFood.id));
 	};
 
-	const handleClickPlates = () => {
-		getPlates();
+	const handleClickPlates = async () => {
+		await getPlates();
+
+		if ($selectedFoods.length > 0) {
+			goto('/plates');
+		}
 	};
 </script>
 
@@ -129,11 +134,10 @@
 		</div>
 
 		<div class="flex justify-center mt-3">
-			<a
+			<button
 				on:click={handleClickPlates}
-				href={$selectedFoods.length > 0 ? "/plates" : undefined}
 				class={`w-80 rounded-full md:self-center p-1 text-xl mx-auto font-semibold text-white text-center bg-orange-400 ${$selectedFoods.length === 0 && "!bg-neutral-300"}`}
-			>pegar receitas</a>
+			>pegar receitas</button>
 		</div>
 	</div>
 </div>
