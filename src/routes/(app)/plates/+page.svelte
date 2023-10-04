@@ -2,7 +2,7 @@
 	import Chip from "$lib/components/chip.svelte";
 	import "@splidejs/svelte-splide/css";
 	import "@splidejs/svelte-splide/css";
-	import { plateList } from "$stores/plate";
+	import { plateList } from "$stores/plate.store";
 	import Carousel from "./carousel.svelte";
 	import type { MoveEventDetail } from "@splidejs/svelte-splide/types";
 	import Categories from "./categories.svelte";

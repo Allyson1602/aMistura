@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { plateList } from "$stores/plate";
+	import { plateList } from "$stores/plate.store";
 	import Icon from "@iconify/svelte";
 	import { Splide, SplideTrack, SplideSlide } from "@splidejs/svelte-splide";
 	import resolveConfig from "tailwindcss/resolveConfig";

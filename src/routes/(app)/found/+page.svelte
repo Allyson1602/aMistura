@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Chip from "$lib/components/chip.svelte";
 	import foodService from "$services/food.service";
-	import { foodList, selectedFoods } from "$stores/food";
+	import { foodList, selectedFoods } from "$stores/food.store";
 	import Icon from "@iconify/svelte";
 	import type { IFood } from "$models/food.model";
 
