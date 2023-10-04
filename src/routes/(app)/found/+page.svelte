@@ -4,6 +4,8 @@
 	import { foodList, selectedFoods } from "$stores/food.store";
 	import Icon from "@iconify/svelte";
 	import type { IFood } from "$models/food.model";
+	import { plateList } from "$stores/plate.store";
+	import plateService from "$services/plate.service";
 
 	let foodValue = "";
 
@@ -12,8 +14,16 @@
 		foodList.set([]);
 	};
 
-	const getFoods = async (): Promise<void> => {
-		await foodService.listFood().then((response) => {
+	const getPlates = () => {
+		plateService.listPlate().then((response) => {
+			if (response.status === 200 && response.data) {
+				plateList.set([...new Set(response.data)]);
+			}
+		});
+	};
+
+	const getFoods = (): void => {
+		foodService.listFood().then((response) => {
 			let newFoods: IFood[] = [];
 
 			if (response.status === 200 && response.data) {
@@ -51,6 +61,10 @@
 	const handleClickRemoveChip = (newFood: IFood) => {
 		foodList.update((foods) => [...foods, newFood]);
 		selectedFoods.update((foods) => foods.filter(foodItem => foodItem.id !== newFood.id));
+	};
+
+	const handleClickPlates = () => {
+		getPlates();
 	};
 </script>
 
@@ -116,6 +130,7 @@
 
 		<div class="flex justify-center mt-3">
 			<a
+				on:click={handleClickPlates}
 				href={$selectedFoods.length > 0 ? "/plates" : undefined}
 				class={`w-80 rounded-full md:self-center p-1 text-xl mx-auto font-semibold text-white text-center bg-orange-400 ${$selectedFoods.length === 0 && "!bg-neutral-300"}`}
 			>pegar receitas</a>

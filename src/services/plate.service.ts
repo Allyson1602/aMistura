@@ -3,11 +3,11 @@ import type { IPlate } from "$models/plate.model";
 import { ApiBase } from "./api";
 
 interface IPlateService {
-    getPlate(): IReturnStatus<IPlate[]>;
+    listPlate(): IReturnStatus<IPlate[]>;
 }
 
 class PlateService extends ApiBase<IPlate[]> implements IPlateService {
-    public getPlate(): IReturnStatus<IPlate[]> {
+    public listPlate(): IReturnStatus<IPlate[]> {
         // return this.get("/plate");
         return new Promise((resolve) => {
             resolve({
