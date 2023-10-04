@@ -1,5 +1,5 @@
 import type { IReturnStatus } from "$lib/types";
-import type { IPlate } from "src/models/plate.model";
+import type { IPlate } from "$models/plate.model";
 import { ApiBase } from "./api";
 
 interface IPlateService {

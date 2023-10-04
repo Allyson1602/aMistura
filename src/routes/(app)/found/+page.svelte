@@ -3,7 +3,7 @@
 	import foodService from "$services/food.service";
 	import { foodList, selectedFoods } from "$stores/food";
 	import Icon from "@iconify/svelte";
-	import type { IFood } from "src/models/food.model";
+	import type { IFood } from "$models/food.model";
 
 	let foodValue = "";
 

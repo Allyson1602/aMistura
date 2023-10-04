@@ -1,5 +1,5 @@
 import type { IReturnStatus } from "$lib/types";
-import type { IFood } from "src/models/food.model";
+import type { IFood } from "$models/food.model";
 import { ApiBase } from "./api";
 
 interface IFoodService {

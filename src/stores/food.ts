@@ -1,4 +1,4 @@
-import type { IFood } from 'src/models/food.model';
+import type { IFood } from '$models/food.model';
 import { writable } from 'svelte/store';
 
 export const foodList = writable<IFood[]>([]);
