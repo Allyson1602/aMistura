@@ -6,8 +6,8 @@ export default {
       fontFamily: {
         sans: ['Poppins', 'arial', 'sans-serif'],
       },
-      backgroundImage: (theme) => ({
-        'kitchen-utensils': "url('./src/lib/images/kitchen-utensils.png')",
+      backgroundImage: () => ({
+        'kitchen-utensils': "url('$lib/images/kitchen-utensils.png')",
       }),
     }
   },
