@@ -13,7 +13,7 @@
 	};
 
 	const getFoods = async (): Promise<void> => {
-		await foodService.getFood().then((response) => {
+		await foodService.listFood().then((response) => {
 			let newFoods: IFood[] = [];
 
 			if (response.status === 200 && response.data) {

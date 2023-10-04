@@ -3,11 +3,11 @@ import type { IFood } from "src/models/food.model";
 import { ApiBase } from "./api";
 
 interface IFoodService {
-    getFood(): IReturnStatus<IFood[]>;
+    listFood(): IReturnStatus<IFood[]>;
 }
 
 class FoodService extends ApiBase<IFood[]> implements IFoodService {
-    public getFood(): IReturnStatus<IFood[]> {
+    public listFood(): IReturnStatus<IFood[]> {
         // return this.get("/food");
         return new Promise((resolve) => {
             resolve({
