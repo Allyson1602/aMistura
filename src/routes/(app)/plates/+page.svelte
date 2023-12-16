@@ -49,11 +49,13 @@
 			</div>
 		</div>
 
-		<div>
-			<Button classProps="md:hidden">ver receita</Button>
+		<div class="flex pb-6">
+			<div>
+				<div class="w-screen h-screen fixed left-0 top-[99px] z-20 bg-lemonChiffon">
+					<Recipe title={plate.name} recipe={plate.recipe} />
+				</div>
 
-			<div class="hidden md:block">
-				<Recipe title={plate.name} recipe={plate.recipe} />
+				<Button text="ver receita" classProps="md:hidden" />
 			</div>
 		</div>
 

@@ -156,6 +156,7 @@
 
 		<div class="flex justify-center mt-3">
 			<Button
+				text="pegar receitas"
 				handleClick={handleClickPlates}
 				classProps="{$selectedFoods.length === 0 && '!bg-neutral-300'}}"
 			/>
