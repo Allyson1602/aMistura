@@ -25,7 +25,7 @@
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
-<div class="h-full relative">
+<div class="h-full">
 	<div class="flex flex-col justify-between gap-7 h-full mt-4 max-w-4xl">
 		<div>
 			<Carousel onMove={handleMoveCarousel} />
@@ -50,17 +50,15 @@
 		</div>
 
 		<div class="flex pb-6">
-			<div>
-				<div class="w-screen h-screen fixed left-0 top-[99px] z-20 bg-lemonChiffon">
-					<Recipe title={plate.name} recipe={plate.recipe} />
-				</div>
-
-				<Button text="ver receita" classProps="md:hidden" />
-			</div>
+			<Button text="ver receita" props={{ class: 'md:hidden' }} />
 		</div>
 
 		{#if plate.categories.length > 0}
 			<Categories categories={plate.categories} />
 		{/if}
+	</div>
+
+	<div class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon">
+		<Recipe title={plate.name} recipe={plate.recipe} />
 	</div>
 </div>
