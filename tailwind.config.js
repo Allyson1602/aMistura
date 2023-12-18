@@ -2,6 +2,9 @@
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	theme: {
+		fontFamily: {
+			sans2: ['Pompiere', 'arial', 'sans-serif']
+		},
 		extend: {
 			colors: {
 				lemonChiffon: '#FFF6C2'
