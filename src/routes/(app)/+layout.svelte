@@ -11,7 +11,7 @@
 		<main class="grow flex flex-col md:flex-row">
 			<Menu route={data.route.id} />
 
-			<div class="p-5 grow">
+			<div class="grow">
 				<slot />
 			</div>
 		</main>

@@ -8,11 +8,21 @@
 	import Categories from './categories.svelte';
 	import Recipe from './recipe.svelte';
 	import Button from '$lib/components/app/button.svelte';
+	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
+	import { EBreakpoints } from '$lib/types';
 
 	let currentPlate = 0;
-	let showRecipe = false;
+	let showRecipe = true;
+	let innerWidth: number;
+	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 
 	$: plate = $plateList[currentPlate];
+
+	$: if (innerWidth < breakpointMd) {
+		showRecipe = false;
+	} else {
+		showRecipe = true;
+	}
 
 	const handleMoveCarousel = (event: CustomEvent<MoveEventDetail> | undefined) => {
 		if (event) {
@@ -30,8 +40,10 @@
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
-<div class="h-full">
-	<div class="flex flex-col justify-between gap-7 h-full mt-4 max-w-4xl">
+<svelte:window bind:innerWidth />
+
+<div class="h-full flex justify-between">
+	<div class="flex flex-col justify-between gap-7 h-full p-5 pt-9 max-w-4xl">
 		<div>
 			<Carousel onMove={handleMoveCarousel} />
 
@@ -68,7 +80,9 @@
 	</div>
 
 	{#if showRecipe}
-		<div class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon">
+		<div
+			class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon max-w-lg md:w-auto md:static"
+		>
 			<Recipe bind:show={showRecipe} {plate} />
 		</div>
 	{/if}

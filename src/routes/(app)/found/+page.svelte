@@ -80,7 +80,7 @@
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
 
-<div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl">
+<div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>
 		<div class="flex flex-col max-w-[400px] mx-auto mt-4">
 			<label for="food-field" class="mb-1 text-orange-400 font-semibold"
