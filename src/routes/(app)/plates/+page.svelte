@@ -10,6 +10,7 @@
 	import Button from '$lib/components/app/button.svelte';
 
 	let currentPlate = 0;
+	let showRecipe = false;
 
 	$: plate = $plateList[currentPlate];
 
@@ -17,6 +18,10 @@
 		if (event) {
 			currentPlate = event.detail.index;
 		}
+	};
+
+	const handleClickShowRecipe = () => {
+		showRecipe = !showRecipe;
 	};
 </script>
 
@@ -50,7 +55,11 @@
 		</div>
 
 		<div class="flex pb-6">
-			<Button text="ver receita" props={{ class: 'md:hidden' }} />
+			<Button
+				text="ver receita"
+				handleClick={handleClickShowRecipe}
+				props={{ class: 'md:hidden' }}
+			/>
 		</div>
 
 		{#if plate.categories.length > 0}
@@ -58,7 +67,9 @@
 		{/if}
 	</div>
 
-	<div class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon">
-		<Recipe title={plate.name} recipe={plate.recipe} />
-	</div>
+	{#if showRecipe}
+		<div class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon">
+			<Recipe bind:show={showRecipe} title={plate.name} recipe={plate.recipe} />
+		</div>
+	{/if}
 </div>
