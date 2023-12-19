@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { ERatingValues } from '$lib/enums';
 	import Icon from '@iconify/svelte';
 
-	export let rating: 1 | 2 | 3 | 4 | 5;
+	export let rating: ERatingValues;
 
 	const iconProps = {
 		width: '20',
@@ -11,13 +12,19 @@
 </script>
 
 <div class="flex">
-	<Icon icon={rating >= 1 ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
+	<Icon icon={rating >= ERatingValues.BAD ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
 
-	<Icon icon={rating >= 2 ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
+	<Icon
+		icon={rating >= ERatingValues.BAD_NORMAL ? 'ph:star-fill' : 'ph:star-light'}
+		{...iconProps}
+	/>
 
-	<Icon icon={rating >= 3 ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
+	<Icon icon={rating >= ERatingValues.NORMAL ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
 
-	<Icon icon={rating >= 4 ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
+	<Icon
+		icon={rating >= ERatingValues.NORMAL_GREAT ? 'ph:star-fill' : 'ph:star-light'}
+		{...iconProps}
+	/>
 
-	<Icon icon={rating >= 5 ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
+	<Icon icon={rating >= ERatingValues.GREAT ? 'ph:star-fill' : 'ph:star-light'} {...iconProps} />
 </div>

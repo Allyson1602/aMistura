@@ -13,11 +13,3 @@ export interface IBreakpoints {
 	xl: string;
 	'2xl': string;
 }
-
-export enum EBreakpoints {
-	SM = 'sm',
-	MD = 'md',
-	LG = 'lg',
-	XL = 'xl',
-	'2XL' = '2xl'
-}

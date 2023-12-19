@@ -1,4 +1,4 @@
-import { RateValues } from '$lib/enums';
+import { ERatingValues } from '$lib/enums';
 import type { IReturnStatus } from '$lib/types';
 import type { IPlate } from '$models/plate.model';
 import { ApiBase } from './api';
@@ -22,7 +22,7 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 						requiredFoods: [],
 						categories: [],
 						recipe: {
-							rate: RateValues.GREAT,
+							rating: ERatingValues.BAD_NORMAL,
 							description:
 								'um delicioso bolo de milho, que está presente em qualquer casa brasileira',
 							ingredients: [
@@ -152,7 +152,7 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 							}
 						],
 						recipe: {
-							rate: RateValues.GREAT,
+							rating: ERatingValues.NORMAL_GREAT,
 							description:
 								'um delicioso bolo de milho, que está presente em qualquer casa brasileira',
 							ingredients: [

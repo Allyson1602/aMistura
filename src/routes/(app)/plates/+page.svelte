@@ -9,7 +9,7 @@
 	import Recipe from './recipe.svelte';
 	import Button from '$lib/components/app/button.svelte';
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
-	import { EBreakpoints } from '$lib/types';
+	import { EBreakpoints } from '$lib/enums';
 
 	let currentPlate = 0;
 	let showRecipe = true;
@@ -43,7 +43,7 @@
 <svelte:window bind:innerWidth />
 
 <div class="h-full flex justify-between">
-	<div class="flex flex-col justify-between gap-7 h-full p-5 pt-9 max-w-4xl">
+	<div class="flex flex-col justify-between gap-7 w-full h-full p-5 pt-9 max-w-4xl">
 		<div>
 			<Carousel onMove={handleMoveCarousel} />
 
@@ -81,7 +81,7 @@
 
 	{#if showRecipe}
 		<div
-			class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon max-w-lg md:w-auto md:static"
+			class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon md:max-w-lg md:w-auto md:static"
 		>
 			<Recipe bind:show={showRecipe} {plate} />
 		</div>

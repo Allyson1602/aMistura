@@ -1,8 +1,8 @@
-import type { RateValues } from '$lib/enums';
+import type { ERatingValues } from '$lib/enums';
 import type { IFood } from './food.model';
 
 export interface IRecipe {
-	rate: RateValues;
+	rating: ERatingValues;
 	description: string;
 	ingredients: IFood[];
 	instructions: string[];
