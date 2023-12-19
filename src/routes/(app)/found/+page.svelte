@@ -158,7 +158,8 @@
 			<Button
 				text="pegar receitas"
 				props={{
-					class: "{$selectedFoods.length === 0 && '!bg-neutral-300'}}"
+					class: "{$selectedFoods.length === 0 && '!bg-neutral-300'}}",
+					disabled: !($selectedFoods.length > 0) ?? false
 				}}
 				handleClick={handleClickPlates}
 			/>
