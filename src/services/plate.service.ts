@@ -22,7 +22,6 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 						requiredFoods: [],
 						categories: [],
 						recipe: {
-							id: 1,
 							rate: RateValues.GREAT,
 							description:
 								'um delicioso bolo de milho, que está presente em qualquer casa brasileira',
@@ -153,7 +152,6 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 							}
 						],
 						recipe: {
-							id: 1,
 							rate: RateValues.GREAT,
 							description:
 								'um delicioso bolo de milho, que está presente em qualquer casa brasileira',

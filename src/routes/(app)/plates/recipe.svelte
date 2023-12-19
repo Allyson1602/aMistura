@@ -1,20 +1,22 @@
 <script lang="ts">
 	import Button from '$lib/components/app/button.svelte';
 	import Rating from '$lib/components/rating.svelte';
+	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
 	import { uRemoveItemArray } from '$lib/utils/remove-item-array';
+	import type { IPlate } from '$models/plate.model';
 	import type { IRecipe } from '$models/recipe.model';
 	import Icon from '@iconify/svelte';
 
-	export let title: string;
-	export let recipe: IRecipe;
+	export let plate: IPlate;
 	export let show: boolean;
+	const { recipe } = plate;
 
 	let elementToScroll: HTMLDivElement;
-	let instructionsCompleted: number[] = JSON.parse(
-		sessionStorage.getItem('instructionsCompleted') || '[]'
-	);
 	let ingredientsChecked: number[] = JSON.parse(
-		sessionStorage.getItem('ingredientsChecked') || '[]'
+		sessionStorage.getItem(EDomain.INGREDIENT_RECIPE.concat('_', plate.id.toString())) || '[]'
+	);
+	let instructionsCompleted: number[] = JSON.parse(
+		sessionStorage.getItem(EDomain.INSTRUCTION_RECIPE.concat('_', plate.id.toString())) || '[]'
 	);
 
 	const toggleIngredientsChecked = (index: number): void => {
@@ -24,9 +26,14 @@
 			ingredientsChecked.push(index);
 		}
 
-		sessionStorage.setItem('ingredientsChecked', JSON.stringify(ingredientsChecked));
+		const ingredientSStorage = hDefaultSessionStorage(
+			EDomain.INGREDIENT_RECIPE,
+			plate.id.toString(),
+			ingredientsChecked
+		);
+		sessionStorage.setItem(ingredientSStorage.identifier, ingredientSStorage.valueString);
 
-		ingredientsChecked = JSON.parse(sessionStorage.getItem('ingredientsChecked')!);
+		ingredientsChecked = JSON.parse(sessionStorage.getItem(ingredientSStorage.identifier)!);
 
 		ingredientsChecked = ingredientsChecked;
 	};
@@ -44,7 +51,7 @@
 	};
 
 	const handleGoBack = () => {
-		show = !show;
+		show = false;
 	};
 </script>
 
@@ -59,7 +66,7 @@
 
 		<div class="flex items-baseline gap-2">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">nome:</p>
-			<p>{title}</p>
+			<p>{plate.name}</p>
 		</div>
 
 		<div>

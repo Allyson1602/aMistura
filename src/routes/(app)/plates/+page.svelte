@@ -69,7 +69,7 @@
 
 	{#if showRecipe}
 		<div class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon">
-			<Recipe bind:show={showRecipe} title={plate.name} recipe={plate.recipe} />
+			<Recipe bind:show={showRecipe} {plate} />
 		</div>
 	{/if}
 </div>
