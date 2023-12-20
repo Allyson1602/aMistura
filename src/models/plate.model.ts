@@ -1,19 +1,20 @@
-import type { ICategory } from "./category.model";
-import type { IFood } from "./food.model";
-import type { IRecipe } from "./recipe.model";
+import type { ERatingValues } from '$lib/enums';
+import type { ICategory } from './category.model';
+import type { IIngredient } from './ingredient.model';
 
 export interface IPlate {
-    id: number;
-    name: string;
-    image: string;
-    includedFoods: IFood[];
-    requiredFoods: IFood[];
-    categories: ICategory[];
-    recipe: IRecipe;
+	id: number;
+	name: string;
+	image: string;
+	ingredients: IIngredient[];
+	categories: ICategory[];
+	rating: ERatingValues;
+	description: string;
+	instructions: string[];
 }
 
 export interface IBasicPlate {
-    id: number;
-    name: string;
-    image: string;
+	id: number;
+	name: string;
+	image: string;
 }

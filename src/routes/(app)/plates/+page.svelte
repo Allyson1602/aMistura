@@ -10,11 +10,24 @@
 	import Button from '$lib/components/app/button.svelte';
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
 	import { EBreakpoints } from '$lib/enums';
+	import { selectedIngredients } from '$stores/ingredient.store';
 
+	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;
 	let showRecipe = true;
 	let innerWidth: number;
-	const breakpointMd = getBreakpoint(EBreakpoints.MD);
+
+	$: ingredientsNotSelected = $plateList[currentPlate].ingredients.filter((ingredient) => {
+		let notSelected = true;
+
+		$selectedIngredients.forEach(({ name }) => {
+			if (ingredient.name === name) {
+				notSelected = false;
+			}
+		});
+
+		return notSelected;
+	});
 
 	$: plate = $plateList[currentPlate];
 
@@ -51,15 +64,15 @@
 				<p class="text-xl">{plate.name}</p>
 
 				<div class="flex gap-1">
-					{#each plate.includedFoods as chip, index}
-						<Chip size="small" text={chip.name} {index} />
+					{#each $selectedIngredients as ingredient, index}
+						<Chip size="small" text={ingredient.name} {index} />
 					{/each}
 				</div>
 
-				{#if plate.requiredFoods.length > 0}
+				{#if ingredientsNotSelected.length > 0}
 					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
-						{#each plate.requiredFoods as chip}
-							<Chip size="small" text={chip.name} isdisabled />
+						{#each ingredientsNotSelected as ingredient}
+							<Chip size="small" text={ingredient.name} isdisabled />
 						{/each}
 					</div>
 				{/if}
@@ -74,9 +87,9 @@
 			/>
 		</div>
 
-		{#if plate.categories.length > 0}
+		<!-- {#if plate.categories.length > 0}
 			<Categories categories={plate.categories} />
-		{/if}
+		{/if} -->
 	</div>
 
 	{#if showRecipe}
