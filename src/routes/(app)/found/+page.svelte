@@ -1,19 +1,19 @@
 <script lang="ts">
 	import Chip from '$lib/components/chip.svelte';
-	import foodService from '$services/food.service';
-	import { foodList, selectedFoods } from '$stores/food.store';
+	import ingredientService from '$services/ingredient.service';
+	import { ingredientsList, selectedIngredients } from '$stores/ingredient.store';
 	import Icon from '@iconify/svelte';
-	import type { IFood } from '$models/food.model';
+	import type { IIngredient } from '$models/ingredient.model';
 	import { plateList } from '$stores/plate.store';
 	import plateService from '$services/plate.service';
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/app/button.svelte';
 
-	let foodValue = '';
+	let ingredientValue = '';
 
 	const cleanField = (): void => {
-		foodValue = '';
-		foodList.set([]);
+		ingredientValue = '';
+		ingredientsList.set([]);
 	};
 
 	const getPlates = () => {
@@ -24,23 +24,23 @@
 		});
 	};
 
-	const getFoods = (): void => {
-		foodService.listFood().then((response) => {
-			let newFoods: IFood[] = [];
+	const getIngredients = (): void => {
+		ingredientService.listIngredient().then((response) => {
+			let newIngredients: IIngredient[] = [];
 
 			if (response.status === 200 && response.data) {
-				newFoods = [...new Set(response.data)];
+				newIngredients = [...new Set(response.data)];
 			}
 
-			if (newFoods.length > 12) {
-				newFoods = newFoods.slice(0, 12);
+			if (newIngredients.length > 12) {
+				newIngredients = newIngredients.slice(0, 12);
 			}
 
-			foodList.set(newFoods);
+			ingredientsList.set(newIngredients);
 		});
 	};
 
-	const handleInputFoodValue = (
+	const handleInputIngredientValue = (
 		event: Event & { currentTarget: EventTarget & HTMLInputElement }
 	) => {
 		const value = event.currentTarget.value;
@@ -51,26 +51,30 @@
 		}
 
 		if (value.length > 2) {
-			getFoods();
+			getIngredients();
 		}
 	};
 
-	const handleClickAddFood = (newFood: IFood) => {
-		if ($selectedFoods.some((selectedItem) => selectedItem.id === newFood.id)) return;
+	const handleClickAddIngredient = (newIngredient: IIngredient) => {
+		if ($selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
-		selectedFoods.update((foods) => [...foods, newFood]);
-		foodList.update((foods) => foods.filter((foodItem) => foodItem.id !== newFood.id));
+		selectedIngredients.update((ingredientss) => [...ingredientss, newIngredient]);
+		ingredientsList.update((ingredientss) =>
+			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+		);
 	};
 
-	const handleClickRemoveChip = (newFood: IFood) => {
-		foodList.update((foods) => [...foods, newFood]);
-		selectedFoods.update((foods) => foods.filter((foodItem) => foodItem.id !== newFood.id));
+	const handleClickRemoveChip = (newIngredient: IIngredient) => {
+		ingredientsList.update((ingredientss) => [...ingredientss, newIngredient]);
+		selectedIngredients.update((ingredientss) =>
+			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+		);
 	};
 
 	const handleClickPlates = async () => {
 		await getPlates();
 
-		if ($selectedFoods.length > 0) {
+		if ($selectedIngredients.length > 0) {
 			goto('/plates');
 		}
 	};
@@ -83,20 +87,20 @@
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>
 		<div class="flex flex-col max-w-[400px] mx-auto mt-4">
-			<label for="food-field" class="mb-1 text-orange-400 font-semibold"
+			<label for="ingredients-field" class="mb-1 text-orange-400 font-semibold"
 				>Busque seus alimentos aqui:</label
 			>
 
 			<div class="relative">
 				<input
-					id="food-field"
-					on:input={handleInputFoodValue}
-					bind:value={foodValue}
+					id="ingredients-field"
+					on:input={handleInputIngredientValue}
+					bind:value={ingredientValue}
 					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200"
 					placeholder="tomate, macarrão, leite..."
 				/>
 
-				{#if foodValue || $foodList.length > 0}
+				{#if ingredientValue || $ingredientsList.length > 0}
 					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
 						<Icon
 							icon="ph:x-circle-bold"
@@ -109,15 +113,15 @@
 			</div>
 		</div>
 
-		{#if $foodList.length > 0}
+		{#if $ingredientsList.length > 0}
 			<div class="rounded shadow-lg mt-4">
 				<ul class="grid grid-cols-2 gap-2 px-8 py-3">
-					{#each $foodList as food}
-						<li data-testid="found-food-item" class="pb-1 border-b border-neutral-200">
+					{#each $ingredientsList as ingredients}
+						<li data-testid="found-ingredients-item" class="pb-1 border-b border-neutral-200">
 							<button
-								data-testid="add-food"
+								data-testid="add-ingredients"
 								class="text-sm pl-1 border-l-2 border-l-transparent hover:border-orange-400"
-								on:click={() => handleClickAddFood(food)}>{food.name}</button
+								on:click={() => handleClickAddIngredient(ingredients)}>{ingredients.name}</button
 							>
 						</li>
 					{/each}
@@ -136,13 +140,17 @@
 		<div>
 			<h3 class="text-orange-400">Selecionados:</h3>
 
-			{#if $selectedFoods.length > 0}
+			{#if $selectedIngredients.length > 0}
 				<div
-					data-testid="selected-foods"
+					data-testid="selected-ingredientss"
 					class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start"
 				>
-					{#each $selectedFoods as food, index (food)}
-						<Chip text={food.name} {index} onRemove={() => handleClickRemoveChip(food)} />
+					{#each $selectedIngredients as ingredients, index (ingredients)}
+						<Chip
+							text={ingredients.name}
+							{index}
+							onRemove={() => handleClickRemoveChip(ingredients)}
+						/>
 					{/each}
 				</div>
 			{:else}
@@ -158,8 +166,8 @@
 			<Button
 				text="pegar receitas"
 				props={{
-					class: "{$selectedFoods.length === 0 && '!bg-neutral-300'}}",
-					disabled: !($selectedFoods.length > 0) ?? false
+					class: "{$selectedIngredients.length === 0 && '!bg-neutral-300'}}",
+					disabled: !($selectedIngredients.length > 0) ?? false
 				}}
 				handleClick={handleClickPlates}
 			/>

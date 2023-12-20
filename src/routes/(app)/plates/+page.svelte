@@ -10,6 +10,8 @@
 	import Button from '$lib/components/app/button.svelte';
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
 	import { EBreakpoints } from '$lib/enums';
+	import { selectedIngredients } from '$stores/ingredient.store';
+	import type { IIngredient } from '$models/ingredient.model';
 
 	let currentPlate = 0;
 	let showRecipe = true;
@@ -23,6 +25,12 @@
 	} else {
 		showRecipe = true;
 	}
+
+	const ingredientsNotSelected = (): IIngredient[] => {
+		return plate.ingredients.filter((ingredient) => {
+			return $selectedIngredients.includes(ingredient) === false;
+		});
+	};
 
 	const handleMoveCarousel = (event: CustomEvent<MoveEventDetail> | undefined) => {
 		if (event) {
@@ -51,15 +59,15 @@
 				<p class="text-xl">{plate.name}</p>
 
 				<div class="flex gap-1">
-					{#each plate.includedFoods as chip, index}
-						<Chip size="small" text={chip.name} {index} />
+					{#each $selectedIngredients as ingredient, index}
+						<Chip size="small" text={ingredient.name} {index} />
 					{/each}
 				</div>
 
-				{#if plate.requiredFoods.length > 0}
+				{#if ingredientsNotSelected().length > 0}
 					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
-						{#each plate.requiredFoods as chip}
-							<Chip size="small" text={chip.name} isdisabled />
+						{#each ingredientsNotSelected() as ingredient}
+							<Chip size="small" text={ingredient.name} isdisabled />
 						{/each}
 					</div>
 				{/if}

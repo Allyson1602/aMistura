@@ -4,7 +4,6 @@
 	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
 	import { uRemoveItemArray } from '$lib/utils/remove-item-array';
 	import type { IPlate } from '$models/plate.model';
-	import type { IRecipe } from '$models/recipe.model';
 	import Icon from '@iconify/svelte';
 
 	export let plate: IPlate;
@@ -60,7 +59,7 @@
 	<div class="flex flex-col gap-3">
 		<div class="flex flex-col items-center gap-1">
 			<p class="font-sans2 text-5xl underline decoration-2 underline-offset-4">Receita</p>
-			<Rating rating={plate.recipe.rating} />
+			<Rating rating={plate.rating} />
 		</div>
 
 		<div class="flex items-baseline gap-2">
@@ -70,14 +69,14 @@
 
 		<div>
 			<span class="font-sans2 text-2xl underline decoration-1 underline-offset-2">descrição:</span>
-			<span>{plate.recipe.description}</span>
+			<span>{plate.description}</span>
 		</div>
 
 		<div class="flex flex-col items-baseline">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">ingredientes:</p>
 
 			<div class="w-full grid grid-cols-2 gap-2 mt-2">
-				{#each plate.recipe.ingredients as ingredient, index}
+				{#each plate.ingredients as ingredient, index}
 					<div class="flex items-start gap-3">
 						<div class="relative origin-center rotate-45">
 							<input
@@ -103,7 +102,7 @@
 		<div class="flex flex-col items-baseline">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">instruções:</p>
 
-			{#each plate.recipe.instructions as instruction, index}
+			{#each plate.instructions as instruction, index}
 				<button
 					on:click={() => toggleInstructionComplete(index)}
 					class={'text-left mb-3'.concat(
