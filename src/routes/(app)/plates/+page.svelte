@@ -87,9 +87,9 @@
 			/>
 		</div>
 
-		{#if plate.categories.length > 0}
+		<!-- {#if plate.categories.length > 0}
 			<Categories categories={plate.categories} />
-		{/if}
+		{/if} -->
 	</div>
 
 	{#if showRecipe}
