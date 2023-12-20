@@ -93,7 +93,9 @@
 								>
 							{/if}
 						</div>
-						<label for={ingredient.id.toString()} class="cursor-pointer">{ingredient.name}</label>
+						<label for={ingredient.id.toString()} class="cursor-pointer"
+							>{ingredient.name}{ingredient.quantity ? ` (${ingredient.quantity})` : ''}</label
+						>
 					</div>
 				{/each}
 			</div>

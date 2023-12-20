@@ -11,12 +11,23 @@
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
 	import { EBreakpoints } from '$lib/enums';
 	import { selectedIngredients } from '$stores/ingredient.store';
-	import type { IIngredient } from '$models/ingredient.model';
 
+	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;
 	let showRecipe = true;
 	let innerWidth: number;
-	const breakpointMd = getBreakpoint(EBreakpoints.MD);
+
+	$: ingredientsNotSelected = $plateList[currentPlate].ingredients.filter((ingredient) => {
+		let notSelected = true;
+
+		$selectedIngredients.forEach(({ name }) => {
+			if (ingredient.name === name) {
+				notSelected = false;
+			}
+		});
+
+		return notSelected;
+	});
 
 	$: plate = $plateList[currentPlate];
 
@@ -25,12 +36,6 @@
 	} else {
 		showRecipe = true;
 	}
-
-	const ingredientsNotSelected = (): IIngredient[] => {
-		return plate.ingredients.filter((ingredient) => {
-			return $selectedIngredients.includes(ingredient) === false;
-		});
-	};
 
 	const handleMoveCarousel = (event: CustomEvent<MoveEventDetail> | undefined) => {
 		if (event) {
@@ -64,9 +69,9 @@
 					{/each}
 				</div>
 
-				{#if ingredientsNotSelected().length > 0}
+				{#if ingredientsNotSelected.length > 0}
 					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
-						{#each ingredientsNotSelected() as ingredient}
+						{#each ingredientsNotSelected as ingredient}
 							<Chip size="small" text={ingredient.name} isdisabled />
 						{/each}
 					</div>
