@@ -5,6 +5,7 @@
 	import Icon from '@iconify/svelte';
 	import { Splide, SplideTrack, SplideSlide } from '@splidejs/svelte-splide';
 	import type { MoveEventDetail } from '@splidejs/svelte-splide/types';
+	import WithoutImagePlate from '$lib/images/without-image-food.jpg';
 
 	export let onMove: ((event: CustomEvent<MoveEventDetail> | undefined) => void) | undefined;
 
@@ -19,7 +20,7 @@
 		{#each $plateList as plate}
 			<SplideSlide>
 				<img
-					src={plate.image}
+					src={plate.image || WithoutImagePlate}
 					alt={plate.name}
 					class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md min-h-[200px] min-w-[200px] max-w-full md:max-w-lg w-full"
 				/>

@@ -17,41 +17,35 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 					{
 						id: 1,
 						name: 'Bolo de fubá',
-						image: 'https://picsum.photos/600/300',
+						image: '',
 						ingredients: [
 							{
 								id: 1,
-								image: '',
 								name: 'limão',
 								quantity: '3'
 							},
 							{
 								id: 2,
-								image: '',
 								name: 'açúcar',
 								quantity: '2'
 							},
 							{
 								id: 3,
-								image: '',
 								name: 'milho',
 								quantity: '2'
 							},
 							{
 								id: 4,
-								image: '',
 								name: 'leite',
 								quantity: '500ml'
 							},
 							{
 								id: 5,
-								image: '',
 								name: 'trigo',
 								quantity: '300g'
 							},
 							{
 								id: 6,
-								image: '',
 								name: 'ovo',
 								quantity: '3'
 							}
@@ -74,23 +68,20 @@ class PlateService extends ApiBase<IPlate[]> implements IPlateService {
 					{
 						id: 2,
 						name: 'Torta de limão',
-						image: 'https://picsum.photos/200/300',
+						image: '',
 						ingredients: [
 							{
 								id: 1,
-								image: '',
 								name: 'limão',
 								quantity: '5'
 							},
 							{
 								id: 2,
-								image: '',
 								name: 'trigo',
 								quantity: '600g'
 							},
 							{
 								id: 3,
-								image: '',
 								name: 'aveia',
 								quantity: '100g'
 							}
