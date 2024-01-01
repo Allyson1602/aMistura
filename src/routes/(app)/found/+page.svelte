@@ -11,7 +11,7 @@
 	import { browser } from '$app/environment';
 
 	let ingredientValue = '';
-	let selectedIngredients: IIngredient[];
+	let selectedIngredients: IIngredient[] = [];
 
 	$: if (browser) {
 		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
@@ -77,6 +77,8 @@
 			selectedIngredientsStorage.identifier,
 			selectedIngredientsStorage.valueString
 		);
+		
+		selectedIngredients = [...selectedIngredients, newIngredient];
 	};
 
 	const handleClickRemoveChip = (newIngredient: IIngredient) => {
