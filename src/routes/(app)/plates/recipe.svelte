@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import Button from '$lib/components/app/button.svelte';
 	import Rating from '$lib/components/rating.svelte';
 	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
@@ -10,12 +11,20 @@
 	export let show: boolean;
 
 	let elementToScroll: HTMLDivElement;
-	let ingredientsChecked: number[] = JSON.parse(
-		sessionStorage.getItem(EDomain.INGREDIENT_RECIPE.concat('_', plate.id.toString())) || '[]'
-	);
-	let instructionsCompleted: number[] = JSON.parse(
-		sessionStorage.getItem(EDomain.INSTRUCTION_RECIPE.concat('_', plate.id.toString())) || '[]'
-	);
+	let ingredientsChecked: number[] = [];
+	let instructionsCompleted: number[] = [];
+
+	$: if (browser) {
+		const sessionStorageIngredients = sessionStorage.getItem(EDomain.INGREDIENT_RECIPE);
+		if (sessionStorageIngredients) {
+			ingredientsChecked = JSON.parse(sessionStorageIngredients);
+		}
+
+		const sessionStorageInstructions = sessionStorage.getItem(EDomain.INSTRUCTION_RECIPE);
+		if (sessionStorageInstructions) {
+			instructionsCompleted = JSON.parse(sessionStorageInstructions);
+		}
+	}
 
 	const toggleIngredientsChecked = (index: number): void => {
 		if (ingredientsChecked?.includes(index)) {

@@ -1,23 +1,33 @@
 <script lang="ts">
 	import { EBreakpoints } from '$lib/enums';
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
-	import { plateList } from '$stores/plate.store';
 	import Icon from '@iconify/svelte';
 	import { Splide, SplideTrack, SplideSlide } from '@splidejs/svelte-splide';
 	import type { MoveEventDetail } from '@splidejs/svelte-splide/types';
 	import WithoutImagePlate from '$lib/images/without-image-food.jpg';
+	import { EDomain } from '$lib/helpers/session-storage';
+	import type { IPlate } from '$models/plate.model';
+	import { browser } from '$app/environment';
 
 	export let onMove: ((event: CustomEvent<MoveEventDetail> | undefined) => void) | undefined;
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
+	let plateList: IPlate[] = [];
 	let screenSize: number;
+
+	$: if (browser) {
+		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
+		if (sessionStoragePlates) {
+			plateList = JSON.parse(sessionStoragePlates);
+		}
+	}
 </script>
 
 <svelte:window bind:innerWidth={screenSize} />
 
 <Splide hasTrack={false} on:move={onMove}>
 	<SplideTrack style="min-height: 15rem">
-		{#each $plateList as plate}
+		{#each plateList as plate}
 			<SplideSlide>
 				<img
 					src={plate.image || WithoutImagePlate}

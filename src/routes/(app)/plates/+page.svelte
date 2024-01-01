@@ -2,7 +2,6 @@
 	import Chip from '$lib/components/chip.svelte';
 	import '@splidejs/svelte-splide/css';
 	import '@splidejs/svelte-splide/css';
-	import { plateList } from '$stores/plate.store';
 	import Carousel from './carousel.svelte';
 	import type { MoveEventDetail } from '@splidejs/svelte-splide/types';
 	import Categories from './categories.svelte';
@@ -10,17 +9,34 @@
 	import Button from '$lib/components/app/button.svelte';
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
 	import { EBreakpoints } from '$lib/enums';
-	import { selectedIngredients } from '$stores/ingredient.store';
+	import { EDomain } from '$lib/helpers/session-storage';
+	import type { IPlate } from '$models/plate.model';
+	import type { IIngredient } from '$models/ingredient.model';
+	import { browser } from '$app/environment';
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;
 	let showRecipe = true;
 	let innerWidth: number;
+	let plateList: IPlate[] = [];
+	let selectedIngredients: IIngredient[] = [];
 
-	$: ingredientsNotSelected = $plateList[currentPlate].ingredients.filter((ingredient) => {
+	$: if (browser) {
+		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
+		if (sessionStoragePlates) {
+			plateList = JSON.parse(sessionStoragePlates);
+		}
+
+		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
+		if (sessionStorageIngredients) {
+			selectedIngredients = JSON.parse(sessionStorageIngredients);
+		}
+	}
+
+	$: ingredientsNotSelected = plateList[currentPlate].ingredients.filter((ingredient) => {
 		let notSelected = true;
 
-		$selectedIngredients.forEach(({ name }) => {
+		selectedIngredients.forEach(({ name }) => {
 			if (ingredient.name === name) {
 				notSelected = false;
 			}
@@ -29,7 +45,7 @@
 		return notSelected;
 	});
 
-	$: plate = $plateList[currentPlate];
+	$: plate = plateList[currentPlate];
 
 	$: if (innerWidth < breakpointMd) {
 		showRecipe = false;
@@ -64,7 +80,7 @@
 				<p class="text-xl">{plate.name}</p>
 
 				<div class="flex gap-1">
-					{#each $selectedIngredients as ingredient, index}
+					{#each selectedIngredients as ingredient, index}
 						<Chip size="small" text={ingredient.name} {index} />
 					{/each}
 				</div>

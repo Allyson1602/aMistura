@@ -1,15 +1,24 @@
 <script lang="ts">
 	import Chip from '$lib/components/chip.svelte';
 	import ingredientService from '$services/ingredient.service';
-	import { ingredientsList, selectedIngredients } from '$stores/ingredient.store';
+	import { ingredientsList } from '$stores/ingredient.store';
 	import Icon from '@iconify/svelte';
 	import type { IIngredient } from '$models/ingredient.model';
-	import { plateList } from '$stores/plate.store';
 	import plateService from '$services/plate.service';
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/app/button.svelte';
+	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
+	import { browser } from '$app/environment';
 
 	let ingredientValue = '';
+	let selectedIngredients: IIngredient[];
+
+	$: if (browser) {
+		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
+		if (sessionStorageIngredients) {
+			selectedIngredients = JSON.parse(sessionStorageIngredients);
+		}
+	}
 
 	const cleanField = (): void => {
 		ingredientValue = '';
@@ -19,7 +28,10 @@
 	const getPlates = () => {
 		plateService.listPlate().then((response) => {
 			if (response.status === 200 && response.data) {
-				plateList.set([...new Set(response.data)]);
+				const ingredientSStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
+					...new Set(response.data)
+				]);
+				sessionStorage.setItem(ingredientSStorage.identifier, ingredientSStorage.valueString);
 			}
 		});
 	};
@@ -56,25 +68,39 @@
 	};
 
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
-		if ($selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
+		if (selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
-		selectedIngredients.update((ingredientss) => [...ingredientss, newIngredient]);
-		ingredientsList.update((ingredientss) =>
-			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+		const selectedIngredientsStorage = hDefaultSessionStorage(EDomain.SELECTED_INGREDIENTS, '', [
+			...new Set([...selectedIngredients, newIngredient])
+		]);
+		sessionStorage.setItem(
+			selectedIngredientsStorage.identifier,
+			selectedIngredientsStorage.valueString
 		);
 	};
 
 	const handleClickRemoveChip = (newIngredient: IIngredient) => {
-		ingredientsList.update((ingredientss) => [...ingredientss, newIngredient]);
-		selectedIngredients.update((ingredientss) =>
-			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+		ingredientsList.update((ingredients) => [...ingredients, newIngredient]); // deprecated
+
+		const updateSelectedIngredients = selectedIngredients.filter(
+			(plateItem) => plateItem !== newIngredient
+		);
+
+		const selectedIngredientsStorage = hDefaultSessionStorage(
+			EDomain.SELECTED_INGREDIENTS,
+			'',
+			updateSelectedIngredients
+		);
+		sessionStorage.setItem(
+			selectedIngredientsStorage.identifier,
+			selectedIngredientsStorage.valueString
 		);
 	};
 
 	const handleClickPlates = async () => {
 		await getPlates();
 
-		if ($selectedIngredients.length > 0) {
+		if (selectedIngredients.length > 0) {
 			goto('/plates');
 		}
 	};
@@ -140,12 +166,12 @@
 		<div>
 			<h3 class="text-orange-400">Selecionados:</h3>
 
-			{#if $selectedIngredients.length > 0}
+			{#if selectedIngredients?.length > 0}
 				<div
-					data-testid="selected-ingredientss"
+					data-testid="selected-ingredients"
 					class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start"
 				>
-					{#each $selectedIngredients as ingredients, index (ingredients)}
+					{#each selectedIngredients as ingredients, index (ingredients)}
 						<Chip
 							text={ingredients.name}
 							{index}
@@ -166,8 +192,8 @@
 			<Button
 				text="pegar receitas"
 				props={{
-					class: "{$selectedIngredients.length === 0 && '!bg-neutral-300'}}",
-					disabled: !($selectedIngredients.length > 0) ?? false
+					class: selectedIngredients?.length === 0 ? '!bg-neutral-300' : undefined,
+					disabled: !(selectedIngredients?.length > 0) ?? false
 				}}
 				handleClick={handleClickPlates}
 			/>

@@ -5,7 +5,7 @@ const hDefaultSessionStorage = <T>(
 	id: string,
 	value: string | boolean | object | Array<T> | Date
 ) => {
-	const identifier = domain.concat('_', id);
+	const identifier = id !== '' ? domain.concat('_', id) : domain;
 	const valueString = JSON.stringify(value);
 
 	return {
@@ -15,6 +15,8 @@ const hDefaultSessionStorage = <T>(
 };
 
 const enum EDomain {
+	SELECTED_INGREDIENTS = 'SELECTED_INGREDIENTS',
+	LIST_PLATE = 'LIST_PLATE',
 	INGREDIENT_RECIPE = 'INGREDIENT_RECIPE',
 	INSTRUCTION_RECIPE = 'INSTRUCTION_RECIPE'
 }
