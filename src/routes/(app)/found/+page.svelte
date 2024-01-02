@@ -9,6 +9,7 @@
 	import Button from '$lib/components/app/button.svelte';
 	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
 	import { browser } from '$app/environment';
+	import _ from 'lodash';
 
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
@@ -48,6 +49,22 @@
 				newIngredients = newIngredients.slice(0, 12);
 			}
 
+			const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
+			const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
+
+			if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
+				ingredientsList.set(newIngredients);
+				return;
+			}
+
+			newIngredients = newIngredients.filter(ingredientItem => {
+				const teste = selectedIngredientsArray.every(selectedItem => {
+					return selectedItem.id !== ingredientItem.id;
+				});
+
+				return teste;
+			});
+
 			ingredientsList.set(newIngredients);
 		});
 	};
@@ -70,6 +87,8 @@
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
 		if (selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
+		ingredientsList.set($ingredientsList.filter(ingredientItem => ingredientItem.id !== newIngredient.id));
+
 		const selectedIngredientsStorage = hDefaultSessionStorage(EDomain.SELECTED_INGREDIENTS, '', [
 			...new Set([...selectedIngredients, newIngredient])
 		]);
@@ -81,11 +100,9 @@
 		selectedIngredients = [...selectedIngredients, newIngredient];
 	};
 
-	const handleClickRemoveChip = (newIngredient: IIngredient) => {
-		ingredientsList.update((ingredients) => [...ingredients, newIngredient]); // deprecated
-
+	const handleClickRemoveChip = (removeIngredient: IIngredient) => {
 		const updateSelectedIngredients = selectedIngredients.filter(
-			(plateItem) => plateItem !== newIngredient
+			(plateItem) => plateItem !== removeIngredient
 		);
 
 		const selectedIngredientsStorage = hDefaultSessionStorage(
@@ -97,6 +114,9 @@
 			selectedIngredientsStorage.identifier,
 			selectedIngredientsStorage.valueString
 		);
+		
+		ingredientsList.update((ingredientItems) => [...ingredientItems, removeIngredient]);
+		selectedIngredients = updateSelectedIngredients;
 	};
 
 	const handleClickPlates = async () => {
