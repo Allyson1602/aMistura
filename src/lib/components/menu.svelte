@@ -1,6 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import BrandImage from '$lib/images/brand.png';
+	import { EDomain } from '$lib/helpers/session-storage';
+	import { browser } from '$app/environment';
 	import { plateList } from '$stores/plate.store';
 
 	export let route: string;
@@ -8,6 +10,13 @@
 	let isExpanded = false;
 
 	$: active = route.slice(route.lastIndexOf('/'));
+
+	$: if (browser) {
+		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
+		if (sessionStoragePlates) {
+			plateList.set(JSON.parse(sessionStoragePlates));
+		}
+	}
 
 	const getPlateLink = (linkName: string): Map<string, string | undefined> => {
 		const plateLink = new Map<'name' | 'classes', string | undefined>();

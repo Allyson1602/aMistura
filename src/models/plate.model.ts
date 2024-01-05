@@ -1,6 +1,7 @@
 import type { ERatingValues } from '$lib/enums';
 import type { ICategory } from './category.model';
 import type { IIngredient } from './ingredient.model';
+import type { IInstruction } from './instruction.model';
 
 export interface IPlate {
 	id: number;
@@ -10,7 +11,7 @@ export interface IPlate {
 	categories: ICategory[];
 	rating: ERatingValues;
 	description: string;
-	instructions: string[];
+	instructions: IInstruction[];
 }
 
 export interface IBasicPlate {

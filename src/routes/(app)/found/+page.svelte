@@ -1,25 +1,46 @@
 <script lang="ts">
 	import Chip from '$lib/components/chip.svelte';
 	import ingredientService from '$services/ingredient.service';
-	import { ingredientsList, selectedIngredients } from '$stores/ingredient.store';
+	import { ingredientsList } from '$stores/ingredient.store';
 	import Icon from '@iconify/svelte';
 	import type { IIngredient } from '$models/ingredient.model';
-	import { plateList } from '$stores/plate.store';
 	import plateService from '$services/plate.service';
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/app/button.svelte';
+	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
+	import { browser } from '$app/environment';
+	import _ from 'lodash';
+	import { plateList } from '$stores/plate.store';
+	import { ELoadingStatus } from '$lib/types';
+	import LoadingPlate from '$lib/components/app/loading-plate.svelte';
 
 	let ingredientValue = '';
+	let selectedIngredients: IIngredient[] = [];
+	let loadingStatus = ELoadingStatus.notStarted;
+
+	$: if (browser) {
+		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
+		if (sessionStorageIngredients) {
+			selectedIngredients = JSON.parse(sessionStorageIngredients);
+		}
+	}
 
 	const cleanField = (): void => {
 		ingredientValue = '';
 		ingredientsList.set([]);
 	};
 
-	const getPlates = () => {
-		plateService.listPlate().then((response) => {
-			if (response.status === 200 && response.data) {
+	const getPlates = async () => {
+		loadingStatus = ELoadingStatus.getting;
+
+		await plateService.listPlate(selectedIngredients).then((response) => {
+			if (response.status === 201 && response.data) {
 				plateList.set([...new Set(response.data)]);
+				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
+					...new Set(response.data)
+				]);
+				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
+				loadingStatus = ELoadingStatus.finished;
 			}
 		});
 	};
@@ -35,6 +56,21 @@
 			if (newIngredients.length > 12) {
 				newIngredients = newIngredients.slice(0, 12);
 			}
+
+			const sessionStorageIngredients =
+				sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
+			const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
+
+			if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
+				ingredientsList.set(newIngredients);
+				return;
+			}
+
+			newIngredients = newIngredients.filter((ingredientItem) => {
+				return selectedIngredientsArray.every((selectedItem) => {
+					return selectedItem.id !== ingredientItem.id;
+				});
+			});
 
 			ingredientsList.set(newIngredients);
 		});
@@ -56,25 +92,46 @@
 	};
 
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
-		if ($selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
+		if (selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
-		selectedIngredients.update((ingredientss) => [...ingredientss, newIngredient]);
-		ingredientsList.update((ingredientss) =>
-			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+		ingredientsList.set(
+			$ingredientsList.filter((ingredientItem) => ingredientItem.id !== newIngredient.id)
 		);
+
+		const selectedIngredientsStorage = hDefaultSessionStorage(EDomain.SELECTED_INGREDIENTS, '', [
+			...new Set([...selectedIngredients, newIngredient])
+		]);
+		sessionStorage.setItem(
+			selectedIngredientsStorage.identifier,
+			selectedIngredientsStorage.valueString
+		);
+
+		selectedIngredients = [...selectedIngredients, newIngredient];
 	};
 
-	const handleClickRemoveChip = (newIngredient: IIngredient) => {
-		ingredientsList.update((ingredientss) => [...ingredientss, newIngredient]);
-		selectedIngredients.update((ingredientss) =>
-			ingredientss.filter((ingredientsItem) => ingredientsItem.id !== newIngredient.id)
+	const handleClickRemoveChip = (removeIngredient: IIngredient) => {
+		const updateSelectedIngredients = selectedIngredients.filter(
+			(plateItem) => plateItem !== removeIngredient
 		);
+
+		const selectedIngredientsStorage = hDefaultSessionStorage(
+			EDomain.SELECTED_INGREDIENTS,
+			'',
+			updateSelectedIngredients
+		);
+		sessionStorage.setItem(
+			selectedIngredientsStorage.identifier,
+			selectedIngredientsStorage.valueString
+		);
+
+		ingredientsList.update((ingredientItems) => [...ingredientItems, removeIngredient]);
+		selectedIngredients = updateSelectedIngredients;
 	};
 
 	const handleClickPlates = async () => {
 		await getPlates();
 
-		if ($selectedIngredients.length > 0) {
+		if (selectedIngredients.length > 0) {
 			goto('/plates');
 		}
 	};
@@ -83,6 +140,8 @@
 <svelte:head>
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
+
+<LoadingPlate status={loadingStatus} />
 
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>
@@ -140,12 +199,12 @@
 		<div>
 			<h3 class="text-orange-400">Selecionados:</h3>
 
-			{#if $selectedIngredients.length > 0}
+			{#if selectedIngredients?.length > 0}
 				<div
-					data-testid="selected-ingredientss"
+					data-testid="selected-ingredients"
 					class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start"
 				>
-					{#each $selectedIngredients as ingredients, index (ingredients)}
+					{#each selectedIngredients as ingredients, index (ingredients)}
 						<Chip
 							text={ingredients.name}
 							{index}
@@ -166,8 +225,8 @@
 			<Button
 				text="pegar receitas"
 				props={{
-					class: "{$selectedIngredients.length === 0 && '!bg-neutral-300'}}",
-					disabled: !($selectedIngredients.length > 0) ?? false
+					class: selectedIngredients?.length === 0 ? '!bg-neutral-300' : undefined,
+					disabled: !(selectedIngredients?.length > 0) ?? false
 				}}
 				handleClick={handleClickPlates}
 			/>

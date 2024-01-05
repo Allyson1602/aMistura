@@ -1,4 +1,5 @@
 import type { AxiosResponse } from 'axios';
+import type { ChatCompletion } from 'openai/resources';
 
 export type IReturnStatus<T> = Promise<AxiosResponse<T>>;
 
@@ -13,3 +14,13 @@ export interface IBreakpoints {
 	xl: string;
 	'2xl': string;
 }
+
+export enum ELoadingStatus {
+	notStarted,
+	getting,
+	finished
+}
+
+export type IResponseAi = {
+	responseAi: ChatCompletion;
+};
