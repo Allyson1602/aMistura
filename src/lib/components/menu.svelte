@@ -3,19 +3,18 @@
 	import BrandImage from '$lib/images/brand.png';
 	import { EDomain } from '$lib/helpers/session-storage';
 	import { browser } from '$app/environment';
-	import type { IPlate } from '$models/plate.model';
+	import { plateList } from '$stores/plate.store';
 
 	export let route: string;
 
 	let isExpanded = false;
-	let plateList: IPlate[] = [];
 
 	$: active = route.slice(route.lastIndexOf('/'));
 
 	$: if (browser) {
 		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
 		if (sessionStoragePlates) {
-			plateList = JSON.parse(sessionStoragePlates);
+			plateList.set(JSON.parse(sessionStoragePlates));
 		}
 	}
 
@@ -28,7 +27,7 @@
 			plateLink.set('classes', 'text-orange-600');
 
 			return plateLink;
-		} else if (plateList.length < 1) {
+		} else if ($plateList.length < 1) {
 			plateLink.set('classes', 'text-neutral-600/30');
 
 			return plateLink;

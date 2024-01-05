@@ -6,19 +6,18 @@
 	import type { MoveEventDetail } from '@splidejs/svelte-splide/types';
 	import WithoutImagePlate from '$lib/images/without-image-food.jpg';
 	import { EDomain } from '$lib/helpers/session-storage';
-	import type { IPlate } from '$models/plate.model';
 	import { browser } from '$app/environment';
+	import { plateList } from '$stores/plate.store';
 
 	export let onMove: ((event: CustomEvent<MoveEventDetail> | undefined) => void) | undefined;
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
-	let plateList: IPlate[] = [];
 	let screenSize: number;
 
 	$: if (browser) {
 		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
 		if (sessionStoragePlates) {
-			plateList = JSON.parse(sessionStoragePlates);
+			plateList.set(JSON.parse(sessionStoragePlates));
 		}
 	}
 </script>
@@ -27,7 +26,7 @@
 
 <Splide hasTrack={false} on:move={onMove}>
 	<SplideTrack style="min-height: 15rem">
-		{#each plateList as plate}
+		{#each $plateList as plate}
 			<SplideSlide>
 				<img
 					src={plate.image || WithoutImagePlate}

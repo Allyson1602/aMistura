@@ -10,6 +10,7 @@
 	import { EDomain, hDefaultSessionStorage } from '$lib/helpers/session-storage';
 	import { browser } from '$app/environment';
 	import _ from 'lodash';
+	import { plateList } from '$stores/plate.store';
 
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
@@ -27,12 +28,16 @@
 	};
 
 	const getPlates = () => {
-		plateService.listPlate().then((response) => {
-			if (response.status === 200 && response.data) {
-				const ingredientSStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
+		console.log('started');
+		plateService.listPlate(selectedIngredients).then((response) => {
+			console.log('got');
+			if (response.status === 201 && response.data) {
+				plateList.set([...new Set(response.data)]);
+				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
 					...new Set(response.data)
 				]);
-				sessionStorage.setItem(ingredientSStorage.identifier, ingredientSStorage.valueString);
+				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
+				console.log('got');
 			}
 		});
 	};
@@ -49,7 +54,8 @@
 				newIngredients = newIngredients.slice(0, 12);
 			}
 
-			const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
+			const sessionStorageIngredients =
+				sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
 			const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
 
 			if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
@@ -57,12 +63,10 @@
 				return;
 			}
 
-			newIngredients = newIngredients.filter(ingredientItem => {
-				const teste = selectedIngredientsArray.every(selectedItem => {
+			newIngredients = newIngredients.filter((ingredientItem) => {
+				return selectedIngredientsArray.every((selectedItem) => {
 					return selectedItem.id !== ingredientItem.id;
 				});
-
-				return teste;
 			});
 
 			ingredientsList.set(newIngredients);
@@ -87,7 +91,9 @@
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
 		if (selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
-		ingredientsList.set($ingredientsList.filter(ingredientItem => ingredientItem.id !== newIngredient.id));
+		ingredientsList.set(
+			$ingredientsList.filter((ingredientItem) => ingredientItem.id !== newIngredient.id)
+		);
 
 		const selectedIngredientsStorage = hDefaultSessionStorage(EDomain.SELECTED_INGREDIENTS, '', [
 			...new Set([...selectedIngredients, newIngredient])
@@ -96,7 +102,7 @@
 			selectedIngredientsStorage.identifier,
 			selectedIngredientsStorage.valueString
 		);
-		
+
 		selectedIngredients = [...selectedIngredients, newIngredient];
 	};
 
@@ -114,7 +120,7 @@
 			selectedIngredientsStorage.identifier,
 			selectedIngredientsStorage.valueString
 		);
-		
+
 		ingredientsList.update((ingredientItems) => [...ingredientItems, removeIngredient]);
 		selectedIngredients = updateSelectedIngredients;
 	};

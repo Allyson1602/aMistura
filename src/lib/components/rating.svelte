@@ -2,7 +2,7 @@
 	import { ERatingValues } from '$lib/enums';
 	import Icon from '@iconify/svelte';
 
-	export let rating: ERatingValues;
+	export let rating: ERatingValues = ERatingValues.BAD;
 
 	const iconProps = {
 		width: '20',

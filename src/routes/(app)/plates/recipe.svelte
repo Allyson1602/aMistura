@@ -68,60 +68,64 @@
 	<div class="flex flex-col gap-3">
 		<div class="flex flex-col items-center gap-1">
 			<p class="font-sans2 text-5xl underline decoration-2 underline-offset-4">Receita</p>
-			<Rating rating={plate.rating} />
+			<Rating rating={plate?.rating} />
 		</div>
 
 		<div class="flex items-baseline gap-2">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">nome:</p>
-			<p>{plate.name}</p>
+			<p>{plate?.name}</p>
 		</div>
 
 		<div>
 			<span class="font-sans2 text-2xl underline decoration-1 underline-offset-2">descrição:</span>
-			<span>{plate.description}</span>
+			<span>{plate?.description}</span>
 		</div>
 
 		<div class="flex flex-col items-baseline">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">ingredientes:</p>
 
 			<div class="w-full grid grid-cols-2 gap-2 mt-2">
-				{#each plate.ingredients as ingredient, index}
-					<div class="flex items-start gap-3">
-						<div class="relative origin-center rotate-45">
-							<input
-								on:click={() => toggleIngredientsChecked(index)}
-								class="w-5 h-5 cursor-pointer"
-								type="checkbox"
-								id={ingredient.id.toString()}
-								checked={ingredientsChecked.includes(index)}
-							/>
-							{#if ingredientsChecked.includes(index)}
-								<span
-									class="w-5 h-5 absolute top-0 left-0 pointer-events-none rounded-sm border border-solid border-yellow-500 bg-lemonChiffon"
-									><Icon icon="ph:knife" class="text-yellow-600 cursor-pointer" /></span
-								>
-							{/if}
+				{#if plate?.ingredients.length > 0}
+					{#each plate.ingredients as ingredient, index}
+						<div class="flex items-start gap-3">
+							<div class="relative origin-center rotate-45">
+								<input
+									on:click={() => toggleIngredientsChecked(index)}
+									class="w-5 h-5 cursor-pointer"
+									type="checkbox"
+									id={ingredient.id.toString()}
+									checked={ingredientsChecked.includes(index)}
+								/>
+								{#if ingredientsChecked.includes(index)}
+									<span
+										class="w-5 h-5 absolute top-0 left-0 pointer-events-none rounded-sm border border-solid border-yellow-500 bg-lemonChiffon"
+										><Icon icon="ph:knife" class="text-yellow-600 cursor-pointer" /></span
+									>
+								{/if}
+							</div>
+							<label for={ingredient.id.toString()} class="cursor-pointer"
+								>{ingredient.name}{ingredient.quantity ? ` (${ingredient.quantity})` : ''}</label
+							>
 						</div>
-						<label for={ingredient.id.toString()} class="cursor-pointer"
-							>{ingredient.name}{ingredient.quantity ? ` (${ingredient.quantity})` : ''}</label
-						>
-					</div>
-				{/each}
+					{/each}
+				{/if}
 			</div>
 		</div>
 
 		<div class="flex flex-col items-baseline">
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">instruções:</p>
 
-			{#each plate.instructions as instruction, index}
-				<button
-					on:click={() => toggleInstructionComplete(index)}
-					class={'text-left mb-3'.concat(
-						' ',
-						instructionsCompleted?.includes(index) ? 'line-through' : 'no-underline'
-					)}>{index + 1}. {instruction}</button
-				>
-			{/each}
+			{#if plate?.instructions.length > 0}
+				{#each plate.instructions as instruction, index}
+					<button
+						on:click={() => toggleInstructionComplete(index)}
+						class={'text-left mb-3'.concat(
+							' ',
+							instructionsCompleted?.includes(index) ? 'line-through' : 'no-underline'
+						)}>{index + 1}. {instruction.description}</button
+					>
+				{/each}
+			{/if}
 		</div>
 	</div>
 

@@ -10,21 +10,20 @@
 	import { getBreakpoint } from '$lib/helpers/tailwind-breakpoint';
 	import { EBreakpoints } from '$lib/enums';
 	import { EDomain } from '$lib/helpers/session-storage';
-	import type { IPlate } from '$models/plate.model';
 	import type { IIngredient } from '$models/ingredient.model';
 	import { browser } from '$app/environment';
+	import { plateList } from '$stores/plate.store';
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;
 	let showRecipe = true;
 	let innerWidth: number;
-	let plateList: IPlate[] = [];
 	let selectedIngredients: IIngredient[] = [];
 
 	$: if (browser) {
 		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
 		if (sessionStoragePlates) {
-			plateList = JSON.parse(sessionStoragePlates);
+			plateList.set(JSON.parse(sessionStoragePlates));
 		}
 
 		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
@@ -33,7 +32,7 @@
 		}
 	}
 
-	$: ingredientsNotSelected = plateList[currentPlate].ingredients.filter((ingredient) => {
+	$: ingredientsNotSelected = $plateList[currentPlate]?.ingredients.filter((ingredient) => {
 		let notSelected = true;
 
 		selectedIngredients.forEach(({ name }) => {
@@ -45,7 +44,7 @@
 		return notSelected;
 	});
 
-	$: plate = plateList[currentPlate];
+	$: plate = $plateList[currentPlate];
 
 	$: if (innerWidth < breakpointMd) {
 		showRecipe = false;
@@ -77,7 +76,7 @@
 			<Carousel onMove={handleMoveCarousel} />
 
 			<div class="flex flex-col gap-4 items-center mt-4">
-				<p class="text-xl">{plate.name}</p>
+				<p class="text-xl">{plate?.name}</p>
 
 				<div class="flex gap-1">
 					{#each selectedIngredients as ingredient, index}
@@ -85,7 +84,7 @@
 					{/each}
 				</div>
 
-				{#if ingredientsNotSelected.length > 0}
+				{#if ingredientsNotSelected?.length > 0}
 					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
 						{#each ingredientsNotSelected as ingredient}
 							<Chip size="small" text={ingredient.name} isdisabled />
