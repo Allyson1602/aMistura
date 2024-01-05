@@ -11,9 +11,12 @@
 	import { browser } from '$app/environment';
 	import _ from 'lodash';
 	import { plateList } from '$stores/plate.store';
+	import { ELoadingStatus } from '$lib/types';
+	import LoadingPlate from '$lib/components/app/loading-plate.svelte';
 
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
+	let loadingStatus = ELoadingStatus.notStarted;
 
 	$: if (browser) {
 		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
@@ -27,17 +30,17 @@
 		ingredientsList.set([]);
 	};
 
-	const getPlates = () => {
-		console.log('started');
-		plateService.listPlate(selectedIngredients).then((response) => {
-			console.log('got');
+	const getPlates = async () => {
+		loadingStatus = ELoadingStatus.getting;
+
+		await plateService.listPlate(selectedIngredients).then((response) => {
 			if (response.status === 201 && response.data) {
 				plateList.set([...new Set(response.data)]);
 				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
 					...new Set(response.data)
 				]);
 				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
-				console.log('got');
+				loadingStatus = ELoadingStatus.finished;
 			}
 		});
 	};
@@ -137,6 +140,8 @@
 <svelte:head>
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
+
+<LoadingPlate status={loadingStatus} />
 
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>

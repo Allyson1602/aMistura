@@ -15,6 +15,12 @@ export interface IBreakpoints {
 	'2xl': string;
 }
 
+export enum ELoadingStatus {
+	notStarted,
+	getting,
+	finished
+}
+
 export type IResponseAi = {
 	responseAi: ChatCompletion;
 };
