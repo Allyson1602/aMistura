@@ -30,14 +30,24 @@
 		ingredientsList.set([]);
 	};
 
-	const getPlates = async () => {
+	const handlePlates = async () => {
 		loadingStatus = ELoadingStatus.getting;
 
 		await plateService.listPlate(selectedIngredients).then((response) => {
 			if (response.status === 201 && response.data) {
-				plateList.set([...new Set(response.data)]);
+				let platesData = response.data;
+
+				// const platesWithImage = platesData.map(async (plateItem) => {
+				// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
+				// 	plateItem.image.link = imageLink.data;
+				// 	return plateItem;
+				// });
+
+				// platesData = await Promise.all(platesWithImage);
+
+				plateList.set([...new Set(platesData)]);
 				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
-					...new Set(response.data)
+					...new Set(platesData)
 				]);
 				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
 				loadingStatus = ELoadingStatus.finished;
@@ -129,7 +139,7 @@
 	};
 
 	const handleClickPlates = async () => {
-		await getPlates();
+		await handlePlates();
 
 		if (selectedIngredients.length > 0) {
 			goto('/plates');

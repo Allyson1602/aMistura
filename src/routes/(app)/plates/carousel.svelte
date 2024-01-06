@@ -29,7 +29,7 @@
 		{#each $plateList as plate}
 			<SplideSlide>
 				<img
-					src={plate.image || WithoutImagePlate}
+					src={plate.image.link || WithoutImagePlate}
 					alt={plate.name}
 					class="max-h-60 object-contain mx-auto my-2 rounded-xl shadow-md min-h-[200px] min-w-[200px] max-w-full md:max-w-lg w-full"
 				/>
