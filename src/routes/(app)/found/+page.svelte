@@ -33,7 +33,9 @@
 	const handlePlates = async () => {
 		loadingStatus = ELoadingStatus.getting;
 
-		await plateService.listPlate(selectedIngredients).then((response) => {
+		const selectedIngredientsName = selectedIngredients.map((selectedItem) => selectedItem.name);
+
+		await plateService.listPlate(selectedIngredientsName).then((response) => {
 			if (response.status === 201 && response.data) {
 				let platesData = response.data;
 
@@ -55,12 +57,12 @@
 		});
 	};
 
-	const getIngredients = (): void => {
-		ingredientService.listIngredient().then((response) => {
+	const getIngredients = (value: string): void => {
+		ingredientService.listIngredient(value).then((response) => {
 			let newIngredients: IIngredient[] = [];
 
 			if (response.status === 200 && response.data) {
-				newIngredients = [...new Set(response.data)];
+				newIngredients = [...new Set((response.data as any).body as IIngredient[])];
 			}
 
 			if (newIngredients.length > 12) {
@@ -91,13 +93,13 @@
 	) => {
 		const value = event.currentTarget.value;
 
-		if (/[^A-Za-z]/g.test(value)) {
+		if (/A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s/g.test(value)) {
 			event.currentTarget.value = value.replace(/[^A-Za-z]/g, '');
 			return;
 		}
 
 		if (value.length > 2) {
-			getIngredients();
+			getIngredients(value);
 		}
 	};
 

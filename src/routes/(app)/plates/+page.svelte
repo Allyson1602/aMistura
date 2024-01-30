@@ -32,17 +32,19 @@
 		}
 	}
 
-	$: ingredientsNotSelected = $plateList[currentPlate]?.ingredients.filter((ingredient) => {
-		let notSelected = true;
+	$: ingredientsNotSelected = $plateList[currentPlate]?.ingredientPlates.filter(
+		(ingredientPlateItem) => {
+			let notSelected = true;
 
-		selectedIngredients.forEach(({ name }) => {
-			if (ingredient.name === name) {
-				notSelected = false;
-			}
-		});
+			selectedIngredients.forEach(({ name }) => {
+				if (ingredientPlateItem.name === name) {
+					notSelected = false;
+				}
+			});
 
-		return notSelected;
-	});
+			return notSelected;
+		}
+	);
 
 	$: plate = $plateList[currentPlate];
 
@@ -75,17 +77,17 @@
 		<div>
 			<Carousel onMove={handleMoveCarousel} />
 
-			<div class="flex flex-col gap-4 items-center mt-4">
+			<div class="flex flex-col gap-4 items-center mt-4 mx-auto max-w-sm">
 				<p class="text-xl">{plate?.name}</p>
 
-				<div class="flex gap-1">
+				<div class="flex justify-center flex-wrap gap-1">
 					{#each selectedIngredients as ingredient, index}
 						<Chip size="small" text={ingredient.name} {index} />
 					{/each}
 				</div>
 
 				{#if ingredientsNotSelected?.length > 0}
-					<div class="flex gap-1 border-t border-t-orange-200 pt-4">
+					<div class="flex justify-center flex-wrap gap-1 border-t border-t-orange-200 pt-4">
 						{#each ingredientsNotSelected as ingredient}
 							<Chip size="small" text={ingredient.name} isdisabled />
 						{/each}

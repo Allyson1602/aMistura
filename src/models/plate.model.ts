@@ -1,14 +1,14 @@
 import type { ERatingValues } from '$lib/enums';
 import type { ICategory } from './category.model';
-import type { IIngredient } from './ingredient.model';
+import type { IIngredientPlate } from './ingredient-plate.model';
 import type { IInstruction } from './instruction.model';
-import type { IPlateImage } from './plate_image.model';
+import type { IPlateImage } from './plate-image.model';
 
 export interface IPlate {
 	id: number;
 	name: string;
 	image: IPlateImage;
-	ingredients: IIngredient[];
+	ingredientPlates: IIngredientPlate[];
 	categories: ICategory[];
 	rating: ERatingValues;
 	description: string;

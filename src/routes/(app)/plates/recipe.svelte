@@ -85,9 +85,9 @@
 			<p class="font-sans2 text-2xl underline decoration-1 underline-offset-2">ingredientes:</p>
 
 			<div class="w-full grid grid-cols-2 gap-2 mt-2">
-				{#if plate?.ingredients.length > 0}
-					{#each plate.ingredients as ingredient, index}
-						<div class="flex items-start gap-3">
+				{#if plate?.ingredientPlates.length > 0}
+					{#each plate.ingredientPlates as ingredient, index}
+						<div class="flex items-center gap-3">
 							<div class="relative origin-center rotate-45">
 								<input
 									on:click={() => toggleIngredientsChecked(index)}
@@ -103,9 +103,10 @@
 									>
 								{/if}
 							</div>
-							<label for={ingredient.id.toString()} class="cursor-pointer"
-								>{ingredient.name}{ingredient.quantity ? ` (${ingredient.quantity})` : ''}</label
-							>
+							<label for={ingredient.id.toString()} class="cursor-pointer flex flex-col">
+								<span>{ingredient.name}</span>
+								<span class="text-xs text-neutral-800">({ingredient.quantity})</span>
+							</label>
 						</div>
 					{/each}
 				{/if}
