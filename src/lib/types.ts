@@ -1,8 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import type { ChatCompletion } from 'openai/resources';
 
-export type IReturnStatus<T> = Promise<AxiosResponse<T>>;
-
 export type IMouseEvent = MouseEvent & {
 	currentTarget: EventTarget & HTMLButtonElement;
 };
@@ -24,3 +22,11 @@ export enum ELoadingStatus {
 export type IResponseAi = {
 	responseAi: ChatCompletion;
 };
+
+export interface IResponse<T> {
+	statusCode: number;
+	success: boolean;
+	data: T;
+}
+
+export type IReturnStatus<T> = Promise<AxiosResponse<IResponse<T>>>;
