@@ -37,7 +37,7 @@
 
 		await plateService.listPlate(selectedIngredientsName).then((response) => {
 			if (response.status === 201 && response.data) {
-				let platesData = response.data;
+				let { data: platesData } = response.data;
 
 				// const platesWithImage = platesData.map(async (plateItem) => {
 				// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
@@ -60,9 +60,10 @@
 	const getIngredients = (value: string): void => {
 		ingredientService.listIngredient(value).then((response) => {
 			let newIngredients: IIngredient[] = [];
+			let { data: ingredientsData } = response.data;
 
 			if (response.status === 200 && response.data) {
-				newIngredients = [...new Set((response.data as any).body as IIngredient[])];
+				newIngredients = [...new Set(ingredientsData)];
 			}
 
 			if (newIngredients.length > 12) {
