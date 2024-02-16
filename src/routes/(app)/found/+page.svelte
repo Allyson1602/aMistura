@@ -17,6 +17,7 @@
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
 	let loadingStatus = ELoadingStatus.notStarted;
+	let loadingIngredients = false;
 
 	$: if (browser) {
 		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
@@ -58,12 +59,16 @@
 	};
 
 	const getIngredients = (value: string): void => {
+		loadingIngredients = true;
+
 		ingredientService.listIngredient(value).then((response) => {
 			let newIngredients: IIngredient[] = [];
 			let { data: ingredientsData } = response.data;
 
-			if (response.status === 200 && response.data) {
+			if (response.status === 200) {
 				newIngredients = [...new Set(ingredientsData)];
+			} else {
+				loadingIngredients = false;
 			}
 
 			if (newIngredients.length > 12) {
@@ -76,6 +81,8 @@
 
 			if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
 				ingredientsList.set(newIngredients);
+				loadingIngredients = false;
+
 				return;
 			}
 
@@ -85,6 +92,7 @@
 				});
 			});
 
+			loadingIngredients = false;
 			ingredientsList.set(newIngredients);
 		});
 	};
@@ -172,11 +180,18 @@
 					placeholder="tomate, macarrão, leite..."
 				/>
 
-				{#if ingredientValue || $ingredientsList.length > 0}
+				{#if loadingIngredients}
+					<Icon
+						icon="ph:circle-notch"
+						class="h-full text-neutral-400 hover:text-neutral-600 absolute top-0 right-2 animate-spin"
+						width="20"
+						height="20"
+					/>
+				{:else if ingredientValue || $ingredientsList.length > 0}
 					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
 						<Icon
 							icon="ph:x-circle-bold"
-							class="text-neutral-400 hover:text-neutral-600 cursor-pointer"
+							class="text-neutral-400 cursor-pointer"
 							width="20"
 							height="20"
 						/>
