@@ -7,8 +7,7 @@ const instance = axios.create({
 		'Access-Control-Allow-Origin': '*',
 		'Access-Control-Allow-Methods': '*',
 		'Access-Control-Allow-Headers':
-			'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin',
-		Authorization: import.meta.env.VITE_AUTH_TOKEN
+			'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Origin'
 	},
 	responseType: 'json'
 });
