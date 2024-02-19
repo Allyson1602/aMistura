@@ -9,7 +9,7 @@ interface IPlateService {
 
 class PlateService extends ApiBase<any> implements IPlateService {
 	public listPlate(selectedIngredientsName: string[]): IReturnStatus<IPlate[]> {
-		return this.post('/openai', { ingredients: selectedIngredientsName });
+		return this.post('/plates/ai', { ingredients: selectedIngredientsName });
 	}
 
 	public getPlateImage(descriptionImage: string): IReturnStatus<string> {
