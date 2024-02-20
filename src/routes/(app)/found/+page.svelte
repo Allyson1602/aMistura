@@ -99,6 +99,7 @@
 
 				if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
 					ingredientsList.set(newIngredients);
+					toast.error('O cozinheiro não encontrou esse ingrediente.');
 					loadingIngredients = ELoadingStatus.finished;
 
 					return;
