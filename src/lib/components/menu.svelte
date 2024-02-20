@@ -47,7 +47,9 @@
 	};
 </script>
 
-<div class={`${isExpanded ? 'h-full' : 'h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}>
+<div
+	class={`${isExpanded ? 'md:h-full' : 'md:h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}
+>
 	<div class="flex justify-between items-center">
 		<div class="w-16">
 			<a href="/">
@@ -73,8 +75,8 @@
 					active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
 				} flex justify-end gap-4 items-center text-neutral-700`}
 			>
-				<p class="font-medium text-xl">home</p>
-				<Icon icon="ph:house-bold" width="20" height="20" />
+				<p class="font-medium text-xl">buscar</p>
+				<Icon icon="ph:magnifying-glass-bold" width="20" height="20" />
 			</a>
 
 			<a
@@ -84,8 +86,8 @@
 					active === '/plates' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
 				} flex justify-end gap-4 items-center text-neutral-700`}
 			>
-				<p class="font-medium text-xl">histórico</p>
-				<Icon icon="ph:clock-counter-clockwise-bold" width="20" height="20" />
+				<p class="font-medium text-xl">receita</p>
+				<Icon icon="ph:hamburger-bold" width="20" height="20" />
 			</a>
 		</div>
 	{/if}
