@@ -47,7 +47,7 @@
 	};
 </script>
 
-<div class={`${isExpanded ? 'h-screen' : 'h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}>
+<div class={`${isExpanded ? 'h-full' : 'h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}>
 	<div class="flex justify-between items-center">
 		<div class="w-16">
 			<a href="/">
@@ -91,7 +91,7 @@
 	{/if}
 </div>
 
-<div class="w-24 h-screen hidden md:flex flex-col items-center gap-7 p-4 bg-kitchen-utensils">
+<div class="w-24 h-full hidden md:flex flex-col items-center gap-7 p-4 bg-kitchen-utensils">
 	<div class="w-16">
 		<a href="/">
 			<img src={BrandImage} alt="Brand chef" />

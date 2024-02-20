@@ -111,7 +111,7 @@
 
 	{#if showRecipe}
 		<div
-			class="w-screen absolute left-0 top-[99px] z-20 bg-lemonChiffon md:max-w-lg md:w-auto md:static"
+			class="w-screen h-[calc(100%-99px)] absolute left-0 top-[99px] z-20 bg-lemonChiffon md:max-w-lg md:w-auto md:static md:h-full"
 		>
 			<Recipe bind:show={showRecipe} {plate} />
 		</div>

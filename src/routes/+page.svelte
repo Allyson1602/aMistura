@@ -6,7 +6,7 @@
 	<meta name="description" content="Informações introdutórias sobre A Mistura" />
 </svelte:head>
 
-<div class="w-screen h-screen bg-kitchen-utensils bg-repeat bg-left-top">
+<div class="w-full h-full bg-kitchen-utensils bg-repeat bg-left-top">
 	<div class="flex flex-col md:flex-row justify-between h-full p-6 max-w-6xl mx-auto">
 		<div>
 			<h4 class="text-neutral-700 text-3xl font-bold text-center pt-24 md:text-5xl">

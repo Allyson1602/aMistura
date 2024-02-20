@@ -16,8 +16,8 @@
 
 <svelte:window bind:innerWidth />
 
-<div class="app">
-	<div class="h-screen flex flex-col justify-between">
+<div class="app h-full">
+	<div class="h-full flex flex-col justify-between">
 		<main class="grow flex flex-col md:flex-row">
 			<Menu route={data.route.id} />
 
