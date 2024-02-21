@@ -7,7 +7,7 @@
 
 {#if status === ELoadingStatus.getting}
 	<div
-		class="w-screen h-screen flex justify-center items-center absolute top-0 left-0 bg-slate-500/60 z-40"
+		class="w-screen h-dvh flex justify-center items-center absolute top-0 left-0 bg-slate-500/60 z-40"
 	>
 		<img
 			src={LoadingPlatesImage}

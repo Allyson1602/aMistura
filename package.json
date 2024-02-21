@@ -1,6 +1,6 @@
 {
 	"name": "amistura",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -40,7 +40,7 @@
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^4.0.5",
 		"svelte-check": "^3.4.3",
-		"tailwindcss": "^3.3.3",
+		"tailwindcss": "^3.4.1",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.4.9",
@@ -56,6 +56,7 @@
 		"iconify-icon": "^1.0.8",
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
-		"openai": "^4.24.0"
+		"openai": "^4.24.0",
+		"svelte-french-toast": "^1.2.0"
 	}
 }

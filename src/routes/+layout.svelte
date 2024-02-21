@@ -3,7 +3,7 @@
 </script>
 
 <div class="app">
-	<main>
+	<main class="h-dvh">
 		<slot />
 	</main>
 </div>

@@ -62,7 +62,7 @@
 	};
 </script>
 
-<div bind:this={elementToScroll} class="pt-2 px-3 overflow-auto h-[calc(100vh-99px)] md:h-screen">
+<div bind:this={elementToScroll} class="pt-2 px-3 overflow-auto md:h-full">
 	<button on:click={handleGoBack} class="md:hidden text-orange-400 pl-2">voltar</button>
 
 	<div class="flex flex-col gap-3">
@@ -128,17 +128,5 @@
 				{/each}
 			{/if}
 		</div>
-	</div>
-
-	<div class="flex justify-center py-2 md:hidden">
-		<Button
-			text="subir"
-			props={{
-				class: '!w-24'
-			}}
-			handleClick={() => {
-				elementToScroll.scroll({ top: 0, behavior: 'smooth' });
-			}}
-		/>
 	</div>
 </div>

@@ -4,10 +4,12 @@
 	import { EDomain } from '$lib/helpers/session-storage';
 	import { browser } from '$app/environment';
 	import { plateList } from '$stores/plate.store';
+	import SimpleDialog from './app/simple-dialog.svelte';
 
 	export let route: string;
 
 	let isExpanded = false;
+	let openPatch: boolean = false;
 
 	$: active = route.slice(route.lastIndexOf('/'));
 
@@ -38,6 +40,10 @@
 		return plateLink;
 	};
 
+	const setOpenPatch = (status: boolean) => {
+		openPatch = status;
+	};
+
 	const handleClickMenu = () => {
 		isExpanded = !isExpanded;
 	};
@@ -47,7 +53,9 @@
 	};
 </script>
 
-<div class={`${isExpanded ? 'h-screen' : 'h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}>
+<div
+	class={`${isExpanded ? 'md:h-full' : 'md:h-auto'}` + ' p-4 bg-kitchen-utensils md:hidden z-40'}
+>
 	<div class="flex justify-between items-center">
 		<div class="w-16">
 			<a href="/">
@@ -65,54 +73,106 @@
 	</div>
 
 	{#if isExpanded}
-		<div class="flex flex-col gap-7 px-10">
-			<a
-				href={active !== '/found' ? '/found' : undefined}
-				on:click={handleClickNav}
-				class={`${
-					active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
-				} flex justify-end gap-4 items-center text-neutral-700`}
-			>
-				<p class="font-medium text-xl">home</p>
-				<Icon icon="ph:house-bold" width="20" height="20" />
-			</a>
+		<div class="flex justify-between items-end">
+			<div class="flex flex-col justify-center gap-1">
+				<button
+					class="w-8 h-8 self-center p-1 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500"
+					>✨</button
+				>
 
-			<a
-				href={active !== '/plates' ? '/plates' : undefined}
-				on:click={handleClickNav}
-				class={`${
-					active === '/plates' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
-				} flex justify-end gap-4 items-center text-neutral-700`}
-			>
-				<p class="font-medium text-xl">histórico</p>
-				<Icon icon="ph:clock-counter-clockwise-bold" width="20" height="20" />
-			</a>
+				<p class="text-black/70 text-sm">alpha 0.0.2</p>
+			</div>
+
+			<div class="flex flex-col gap-4 px-10">
+				<a
+					href={active !== '/found' ? '/found' : undefined}
+					on:click={handleClickNav}
+					class={`${
+						active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
+					} flex justify-end gap-4 items-center text-neutral-700`}
+				>
+					<p class="font-medium text-xl">buscar</p>
+					<Icon icon="ph:magnifying-glass-bold" width="20" height="20" />
+				</a>
+
+				<a
+					href={active !== '/plates' ? '/plates' : undefined}
+					on:click={handleClickNav}
+					class={`${
+						active === '/plates' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
+					} flex justify-end gap-4 items-center text-neutral-700`}
+				>
+					<p class="font-medium text-xl">receita</p>
+					<Icon icon="ph:hamburger-bold" width="20" height="20" />
+				</a>
+			</div>
 		</div>
 	{/if}
 </div>
 
-<div class="w-24 h-screen hidden md:flex flex-col items-center gap-7 p-4 bg-kitchen-utensils">
-	<div class="w-16">
-		<a href="/">
-			<img src={BrandImage} alt="Brand chef" />
-		</a>
+<div
+	class="w-24 h-full hidden md:flex flex-col items-center justify-between p-4 bg-kitchen-utensils"
+>
+	<div class="flex gap-7 flex-col items-center">
+		<div class="w-16">
+			<a href="/">
+				<img src={BrandImage} alt="Brand chef" />
+			</a>
+		</div>
+
+		<nav class="flex flex-col gap-7">
+			<a
+				href={active !== '/found' ? '/found' : undefined}
+				class={`${
+					active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
+				} ease-linear`}
+			>
+				<Icon icon="ph:magnifying-glass-bold" width="35" height="35" />
+			</a>
+
+			<a
+				href={getPlateLink(active).get('name')}
+				class={`${getPlateLink(active).get('classes')} ease-linear`}
+			>
+				<Icon icon="ph:bowl-food-bold" width="35" height="35" />
+			</a>
+		</nav>
 	</div>
 
-	<nav class="flex flex-col gap-7">
-		<a
-			href={active !== '/found' ? '/found' : undefined}
-			class={`${
-				active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
-			} ease-linear`}
+	<div class="flex flex-col justify-center gap-2">
+		<button
+			on:click={() => {
+				openPatch = true;
+			}}
+			class="w-8 h-8 self-center p-1 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500"
+			>✨</button
 		>
-			<Icon icon="ph:magnifying-glass-bold" width="35" height="35" />
-		</a>
 
-		<a
-			href={getPlateLink(active).get('name')}
-			class={`${getPlateLink(active).get('classes')} ease-linear`}
-		>
-			<Icon icon="ph:bowl-food-bold" width="35" height="35" />
-		</a>
-	</nav>
+		<p class="text-black/70 text-sm text-center">alpha 0.0.2</p>
+	</div>
 </div>
+
+{#if openPatch}
+	<SimpleDialog {setOpenPatch}>
+		<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+			<div class="sm:flex sm:items-start">
+				<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+					<h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+						✨ Patches de atualização ✨
+					</h3>
+
+					<div class="mt-4">
+						<p class="text-xs text-gray-400">21/02/2024</p>
+						<ol class="list-decimal list-inside">
+							<li class="text-sm text-gray-500">Correção de erro ao gerar receitas.</li>
+							<li class="text-sm text-gray-500 py-1">Mensagem para erros ao buscar receitas.</li>
+							<li class="text-sm text-gray-500">
+								Ajuste com a altura máxima da tela em smartphones.
+							</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</SimpleDialog>
+{/if}

@@ -13,11 +13,15 @@
 	import { plateList } from '$stores/plate.store';
 	import { ELoadingStatus } from '$lib/types';
 	import LoadingPlate from '$lib/components/app/loading-plate.svelte';
+	import type { AxiosError } from 'axios';
+	import { getRandomNumber } from '$lib/utils/get-random-number';
+	import { errorMessages } from '$lib/resources/error-messages';
+	import toast from 'svelte-french-toast';
 
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
-	let loadingStatus = ELoadingStatus.notStarted;
-	let loadingIngredients = false;
+	let loadingPlates = ELoadingStatus.notStarted;
+	let loadingIngredients = ELoadingStatus.notStarted;
 
 	$: if (browser) {
 		const sessionStorageIngredients = sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS);
@@ -32,69 +36,87 @@
 	};
 
 	const handlePlates = async () => {
-		loadingStatus = ELoadingStatus.getting;
+		loadingPlates = ELoadingStatus.getting;
 
 		const selectedIngredientsName = selectedIngredients.map((selectedItem) => selectedItem.name);
 
-		await plateService.listPlate(selectedIngredientsName).then((response) => {
-			if (response.status === 201 && response.data) {
-				let { data: platesData } = response.data;
+		await plateService
+			.listPlate(selectedIngredientsName)
+			.then((response) => {
+				if (response.status === 201 && response.data) {
+					let { data: platesData } = response.data;
 
-				// const platesWithImage = platesData.map(async (plateItem) => {
-				// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
-				// 	plateItem.image.link = imageLink.data;
-				// 	return plateItem;
-				// });
+					// const platesWithImage = platesData.map(async (plateItem) => {
+					// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
+					// 	plateItem.image.link = imageLink.data;
+					// 	return plateItem;
+					// });
 
-				// platesData = await Promise.all(platesWithImage);
+					// platesData = await Promise.all(platesWithImage);
 
-				plateList.set([...new Set(platesData)]);
-				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
-					...new Set(platesData)
-				]);
+					plateList.set([...new Set(platesData)]);
+					const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
+						...new Set(platesData)
+					]);
+					sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
+					loadingPlates = ELoadingStatus.finished;
+
+					return goto('/plates');
+				}
+			})
+			.catch((response: AxiosError) => {
+				loadingPlates = ELoadingStatus.finished;
+
+				const randomPhraseIndex = getRandomNumber(errorMessages.length - 1);
+				toast.error(errorMessages[randomPhraseIndex]);
+
+				plateList.set([]);
+				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', []);
 				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
-				loadingStatus = ELoadingStatus.finished;
-			}
-		});
+				loadingPlates = ELoadingStatus.finished;
+			});
 	};
 
 	const getIngredients = (value: string): void => {
-		loadingIngredients = true;
+		loadingIngredients = ELoadingStatus.getting;
 
-		ingredientService.listIngredient(value).then((response) => {
-			let newIngredients: IIngredient[] = [];
-			let { data: ingredientsData } = response.data;
+		ingredientService
+			.listIngredient(value)
+			.then((response) => {
+				let newIngredients: IIngredient[] = [];
+				let { data: ingredientsData } = response.data;
 
-			if (response.status === 200) {
 				newIngredients = [...new Set(ingredientsData)];
-			} else {
-				loadingIngredients = false;
-			}
+				loadingIngredients = ELoadingStatus.finished;
 
-			if (newIngredients.length > 12) {
-				newIngredients = newIngredients.slice(0, 12);
-			}
+				if (newIngredients.length > 12) {
+					newIngredients = newIngredients.slice(0, 12);
+				}
 
-			const sessionStorageIngredients =
-				sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
-			const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
+				const sessionStorageIngredients =
+					sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
+				const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
 
-			if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
-				ingredientsList.set(newIngredients);
-				loadingIngredients = false;
+				if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
+					ingredientsList.set(newIngredients);
+					loadingIngredients = ELoadingStatus.finished;
 
-				return;
-			}
+					return;
+				}
 
-			newIngredients = newIngredients.filter((ingredientItem) => {
-				return selectedIngredientsArray.every((selectedItem) => {
-					return selectedItem.id !== ingredientItem.id;
+				newIngredients = newIngredients.filter((ingredientItem) => {
+					return selectedIngredientsArray.every((selectedItem) => {
+						return selectedItem.id !== ingredientItem.id;
+					});
 				});
-			});
 
-			loadingIngredients = false;
-			ingredientsList.set(newIngredients);
-		});
+				loadingIngredients = ELoadingStatus.finished;
+				ingredientsList.set(newIngredients);
+			})
+			.catch((response: AxiosError) => {
+				toast.error('O cozinheiro não encontrou esse ingrediente.');
+				loadingIngredients = ELoadingStatus.finished;
+			});
 	};
 
 	const handleInputIngredientValue = (
@@ -150,10 +172,8 @@
 	};
 
 	const handleClickPlates = async () => {
-		await handlePlates();
-
 		if (selectedIngredients.length > 0) {
-			goto('/plates');
+			await handlePlates();
 		}
 	};
 </script>
@@ -162,7 +182,7 @@
 	<meta name="description" content="Seleção de ingredientes para buscar receitas" />
 </svelte:head>
 
-<LoadingPlate status={loadingStatus} />
+<LoadingPlate status={loadingPlates} />
 
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>
@@ -176,11 +196,11 @@
 					id="ingredients-field"
 					on:input={handleInputIngredientValue}
 					bind:value={ingredientValue}
-					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200"
-					placeholder="tomate, macarrão, leite..."
+					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200 placeholder:text-sm"
+					placeholder="digite um ingrediente"
 				/>
 
-				{#if loadingIngredients}
+				{#if loadingIngredients === ELoadingStatus.getting}
 					<Icon
 						icon="ph:circle-notch"
 						class="h-full text-neutral-400 hover:text-neutral-600 absolute top-0 right-2 animate-spin"
@@ -213,12 +233,6 @@
 						</li>
 					{/each}
 				</ul>
-			</div>
-		{:else}
-			<div class="mt-4">
-				<p class="py-1 text-sm text-center font-light text-neutral-400">
-					Alimentos buscados apareceram aqui
-				</p>
 			</div>
 		{/if}
 	</div>
