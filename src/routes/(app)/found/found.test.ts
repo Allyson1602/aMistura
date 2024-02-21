@@ -8,7 +8,7 @@ describe('Page found test', () => {
 	it('Check if click at clean input, it is cleaned and the found list', async () => {
 		const { container } = render(FoundPage);
 
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha'));
 
@@ -44,7 +44,7 @@ describe('Page found test', () => {
 	it('Check if it is possible to remove a selected ingredient', async () => {
 		render(FoundPage);
 
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha'));
 
@@ -74,7 +74,7 @@ describe('Page found test', () => {
 	it('Check if to select a found ingredient it goes to selecteds list', async () => {
 		const { container } = render(FoundPage);
 
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha'));
 
@@ -101,7 +101,7 @@ describe('Page found test', () => {
 
 	it('Check if each ingredient is different of the all', async () => {
 		const { container } = render(FoundPage);
-		const input = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha'));
 
@@ -118,7 +118,7 @@ describe('Page found test', () => {
 
 	it('Check if has minimum one and maximum twelve found ingredients', async () => {
 		const { container } = render(FoundPage);
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha'));
 
@@ -130,7 +130,7 @@ describe('Page found test', () => {
 
 	it('Check if input has special character', async () => {
 		render(FoundPage);
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, '@Abobr_inha!'));
 
@@ -139,7 +139,7 @@ describe('Page found test', () => {
 
 	it('Check if input has not number', async () => {
 		render(FoundPage);
-		const input: HTMLInputElement = screen.getByLabelText('Busque seus alimentos aqui:');
+		const input: HTMLInputElement = screen.getByLabelText('Busque seus ingredientes aqui:');
 
 		await act(() => userEvent.type(input, 'Abobrinha123'));
 

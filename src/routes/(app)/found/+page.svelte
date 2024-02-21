@@ -87,6 +87,12 @@
 				let newIngredients: IIngredient[] = [];
 				let { data: ingredientsData } = response.data;
 
+				if (ingredientsData.length === 0) {
+					toast('O cozinheiro não encontrou esse ingrediente.', {
+						id: '1'
+					});
+				}
+
 				newIngredients = [...new Set(ingredientsData)];
 				loadingIngredients = ELoadingStatus.finished;
 
@@ -115,7 +121,9 @@
 				ingredientsList.set(newIngredients);
 			})
 			.catch((response: AxiosError) => {
-				toast.error('O cozinheiro não encontrou esse ingrediente.');
+				toast.error('O cozinheiro não encontrou esse ingrediente.', {
+					id: '1'
+				});
 				loadingIngredients = ELoadingStatus.finished;
 			});
 	};
@@ -186,7 +194,7 @@
 	<div>
 		<div class="flex flex-col max-w-[400px] mx-auto mt-4">
 			<label for="ingredients-field" class="mb-1 text-orange-400 font-semibold"
-				>Busque seus alimentos aqui:</label
+				>Busque seus ingredientes aqui:</label
 			>
 
 			<div class="relative">
@@ -232,6 +240,12 @@
 					{/each}
 				</ul>
 			</div>
+		{:else}
+			<div class="mt-4">
+				<p class="py-1 text-sm text-center font-light text-neutral-400">
+					Alimentos buscados apareceram aqui
+				</p>
+			</div>
 		{/if}
 	</div>
 
@@ -251,12 +265,6 @@
 							onRemove={() => handleClickRemoveChip(ingredients)}
 						/>
 					{/each}
-				</div>
-			{:else}
-				<div class="mt-4 md:justify-start">
-					<p class="py-1 text-sm text-center font-light text-neutral-400">
-						Nenhum alimento selecionado
-					</p>
 				</div>
 			{/if}
 		</div>
