@@ -240,12 +240,6 @@
 					{/each}
 				</ul>
 			</div>
-		{:else}
-			<div class="mt-4">
-				<p class="py-1 text-sm text-center font-light text-neutral-400">
-					Alimentos buscados apareceram aqui
-				</p>
-			</div>
 		{/if}
 	</div>
 
