@@ -99,7 +99,6 @@
 
 				if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
 					ingredientsList.set(newIngredients);
-					toast.error('O cozinheiro não encontrou esse ingrediente.');
 					loadingIngredients = ELoadingStatus.finished;
 
 					return;
@@ -197,8 +196,8 @@
 					id="ingredients-field"
 					on:input={handleInputIngredientValue}
 					bind:value={ingredientValue}
-					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200"
-					placeholder="tomate, macarrão, leite..."
+					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200 placeholder:text-sm"
+					placeholder="digite um ingrediente"
 				/>
 
 				{#if loadingIngredients === ELoadingStatus.getting}
@@ -234,12 +233,6 @@
 						</li>
 					{/each}
 				</ul>
-			</div>
-		{:else}
-			<div class="mt-4">
-				<p class="py-1 text-sm text-center font-light text-neutral-400">
-					Alimentos buscados apareceram aqui
-				</p>
 			</div>
 		{/if}
 	</div>
