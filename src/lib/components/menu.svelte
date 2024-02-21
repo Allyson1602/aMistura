@@ -49,7 +49,9 @@
 	};
 
 	const handleClickNav = () => {
-		isExpanded = false;
+		if ($plateList.length > 0) {
+			isExpanded = false;
+		}
 	};
 </script>
 
@@ -88,7 +90,7 @@
 
 			<div class="flex flex-col gap-4 px-10">
 				<a
-					href={active !== '/found' ? '/found' : undefined}
+					href="/found"
 					on:click={handleClickNav}
 					class={`${
 						active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
@@ -99,11 +101,9 @@
 				</a>
 
 				<a
-					href={active !== '/plates' ? '/plates' : undefined}
 					on:click={handleClickNav}
-					class={`${
-						active === '/plates' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
-					} flex justify-end gap-4 items-center text-neutral-700`}
+					href={getPlateLink(active).get('name')}
+					class={`${getPlateLink(active).get('classes')} flex justify-end gap-4 items-center`}
 				>
 					<p class="font-medium text-xl">receita</p>
 					<Icon icon="ph:hamburger-bold" width="20" height="20" />
@@ -125,7 +125,7 @@
 
 		<nav class="flex flex-col gap-7">
 			<a
-				href={active !== '/found' ? '/found' : undefined}
+				href={'/found'}
 				class={`${
 					active === '/found' ? 'text-orange-600' : 'text-neutral-600 hover:text-orange-400'
 				} ease-linear`}
@@ -165,7 +165,7 @@
 					</h3>
 
 					<div class="mt-4">
-						<p class="text-xs text-gray-400">21/02/2024</p>
+						<p class="text-xs text-gray-400">21/02/2024 - v0.0.2</p>
 						<ol class="list-decimal list-inside">
 							<li class="text-sm text-gray-500">Correção de erro ao gerar receitas.</li>
 							<li class="text-sm text-gray-500 py-1">Mensagem para erros ao buscar receitas.</li>
