@@ -18,6 +18,7 @@
 	import { errorMessages } from '$lib/resources/error-messages';
 	import toast from 'svelte-french-toast';
 
+	let inputElem: HTMLInputElement;
 	let ingredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
 	let loadingPlates = ELoadingStatus.notStarted;
@@ -119,19 +120,16 @@
 			});
 	};
 
-	const handleInputIngredientValue = (
-		event: Event & { currentTarget: EventTarget & HTMLInputElement }
-	) => {
-		const value = event.currentTarget.value;
+	const handleIngredientInput = () => {
+		let value = inputElem.value.toLowerCase();
 
-		if (/A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s/g.test(value)) {
-			event.currentTarget.value = value.replace(/[^A-Za-z]/g, '');
-			return;
-		}
+		value = value.replace(/[^a-záàâãéèêíóôõúç\s]/g, '');
 
 		if (value.length > 2) {
 			getIngredients(value);
 		}
+
+		inputElem.value = value;
 	};
 
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
@@ -194,8 +192,8 @@
 			<div class="relative">
 				<input
 					id="ingredients-field"
-					on:input={handleInputIngredientValue}
-					bind:value={ingredientValue}
+					bind:this={inputElem}
+					on:input={handleIngredientInput}
 					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200 placeholder:text-sm"
 					placeholder="digite um ingrediente"
 				/>
