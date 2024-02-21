@@ -158,14 +158,17 @@
 			<div class="sm:flex sm:items-start">
 				<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 					<h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-						✨ Atualizações do projeto ✨
+						✨ Patches de atualização ✨
 					</h3>
 
-					<div class="mt-2">
+					<div class="mt-4">
+						<p class="text-xs text-gray-400">21/02/2024</p>
 						<ol class="list-decimal list-inside">
 							<li class="text-sm text-gray-500">Correção de erro ao gerar receitas.</li>
 							<li class="text-sm text-gray-500 py-1">Mensagem para erros ao buscar receitas.</li>
-							<li class="text-sm text-gray-500">Ajuste com a altura máxima da tela.</li>
+							<li class="text-sm text-gray-500">
+								Ajuste com a altura máxima da tela em smartphones.
+							</li>
 						</ol>
 					</div>
 				</div>
