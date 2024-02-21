@@ -12,7 +12,7 @@
 	let innerWidth: number;
 </script>
 
-<Toaster position={innerWidth > breakpointSm ? 'bottom-left' : 'bottom-center'} />
+<Toaster position={innerWidth <= breakpointSm ? 'top-center' : 'bottom-left'} />
 
 <svelte:window bind:innerWidth />
 

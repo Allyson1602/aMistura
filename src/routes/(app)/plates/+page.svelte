@@ -66,7 +66,7 @@
 </script>
 
 <svelte:head>
-	<title>(10) A Mistura</title>
+	<title>A Mistura</title>
 	<meta name="description" content="Listagem de pratos com ingredientes informados" />
 </svelte:head>
 
