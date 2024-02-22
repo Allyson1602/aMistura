@@ -36,97 +36,9 @@
 		ingredientsList.set([]);
 	};
 
-	const handlePlates = async () => {
-		loadingPlates = ELoadingStatus.getting;
+	const handlePlates = async () => {};
 
-		const selectedIngredientsName = selectedIngredients.map((selectedItem) => selectedItem.name);
-
-		await plateService
-			.listPlate(selectedIngredientsName)
-			.then((response) => {
-				if (response.status === 201 && response.data) {
-					let { data: platesData } = response.data;
-
-					// const platesWithImage = platesData.map(async (plateItem) => {
-					// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
-					// 	plateItem.image.link = imageLink.data;
-					// 	return plateItem;
-					// });
-
-					// platesData = await Promise.all(platesWithImage);
-
-					plateList.set([...new Set(platesData)]);
-					const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
-						...new Set(platesData)
-					]);
-					sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
-					loadingPlates = ELoadingStatus.finished;
-
-					return goto('/plates');
-				}
-			})
-			.catch((response: AxiosError) => {
-				loadingPlates = ELoadingStatus.finished;
-
-				const randomPhraseIndex = getRandomNumber(errorMessages.length - 1);
-				toast.error(errorMessages[randomPhraseIndex]);
-
-				plateList.set([]);
-				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', []);
-				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
-				loadingPlates = ELoadingStatus.finished;
-			});
-	};
-
-	const getIngredients = (value: string): void => {
-		loadingIngredients = ELoadingStatus.getting;
-
-		ingredientService
-			.listIngredient(value)
-			.then((response) => {
-				let newIngredients: IIngredient[] = [];
-				let { data: ingredientsData } = response.data;
-
-				if (ingredientsData.length === 0) {
-					toast('O cozinheiro não encontrou esse ingrediente.', {
-						id: '1'
-					});
-				}
-
-				newIngredients = [...new Set(ingredientsData)];
-				loadingIngredients = ELoadingStatus.finished;
-
-				if (newIngredients.length > 12) {
-					newIngredients = newIngredients.slice(0, 12);
-				}
-
-				const sessionStorageIngredients =
-					sessionStorage.getItem(EDomain.SELECTED_INGREDIENTS) || '[]';
-				const selectedIngredientsArray: IIngredient[] = JSON.parse(sessionStorageIngredients);
-
-				if (!sessionStorageIngredients || selectedIngredientsArray?.length === 0) {
-					ingredientsList.set(newIngredients);
-					loadingIngredients = ELoadingStatus.finished;
-
-					return;
-				}
-
-				newIngredients = newIngredients.filter((ingredientItem) => {
-					return selectedIngredientsArray.every((selectedItem) => {
-						return selectedItem.id !== ingredientItem.id;
-					});
-				});
-
-				loadingIngredients = ELoadingStatus.finished;
-				ingredientsList.set(newIngredients);
-			})
-			.catch((response: AxiosError) => {
-				toast.error('O cozinheiro não encontrou esse ingrediente.', {
-					id: '1'
-				});
-				loadingIngredients = ELoadingStatus.finished;
-			});
-	};
+	const getIngredients = (value: string): void => {};
 
 	const handleIngredientInput = () => {
 		let value = inputElem.value.toLowerCase();
