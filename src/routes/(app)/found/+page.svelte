@@ -192,7 +192,7 @@
 
 <div class="grid grid-cols-1 auto-rows-min md:grid-cols-2 md:gap-10 max-w-5xl p-5">
 	<div>
-		<div class="flex flex-col max-w-[400px] mx-auto mt-4">
+		<div class="flex flex-col max-w-[400px] mt-4">
 			<label for="ingredients-field" class="mb-1 text-orange-400 font-semibold"
 				>Busque seus ingredientes aqui:</label
 			>
@@ -244,10 +244,10 @@
 	</div>
 
 	<div class="flex flex-col mt-4">
-		<div>
-			<h3 class="text-orange-400">Selecionados:</h3>
+		{#if selectedIngredients?.length > 0}
+			<div>
+				<h3 class="text-orange-400">Selecionados:</h3>
 
-			{#if selectedIngredients?.length > 0}
 				<div
 					data-testid="selected-ingredients"
 					class="flex flex-wrap gap-x-2 gap-y-2 mt-4 md:justify-start"
@@ -260,8 +260,8 @@
 						/>
 					{/each}
 				</div>
-			{/if}
-		</div>
+			</div>
+		{/if}
 
 		<div class="flex justify-center mt-3">
 			<Button
