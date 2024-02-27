@@ -18,13 +18,13 @@
 
 <div class="app h-full">
 	<div class="h-full flex flex-col justify-between">
-		<main class="grow flex flex-col md:flex-row">
+		<div class="grow flex flex-col md:flex-row">
 			<Menu route={data.route.id} />
 
 			<div class="grow">
 				<slot />
 			</div>
-		</main>
+		</div>
 
 		<!-- only mobile -->
 		<GrabBottom />
