@@ -13,12 +13,17 @@
 	import type { IIngredient } from '$models/ingredient.model';
 	import { browser } from '$app/environment';
 	import { plateList } from '$stores/plate.store';
+	import { goto } from '$app/navigation';
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;
 	let showRecipe = true;
 	let innerWidth: number;
 	let selectedIngredients: IIngredient[] = [];
+
+	$: if ($plateList.length < 1) {
+		goto('/found');
+	}
 
 	$: if (browser) {
 		const sessionStoragePlates = sessionStorage.getItem(EDomain.LIST_PLATE);
