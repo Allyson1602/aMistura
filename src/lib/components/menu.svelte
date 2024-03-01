@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import BrandImage from '$lib/images/brand.png';
+	import PixQRCodeImage from '$lib/images/pix.jpeg';
 	import { EDomain } from '$lib/helpers/session-storage';
 	import { browser } from '$app/environment';
 	import { plateList } from '$stores/plate.store';
@@ -10,6 +11,7 @@
 
 	let isExpanded = false;
 	let openPatch: boolean = false;
+	let openPix: boolean = true;
 
 	$: active = route.slice(route.lastIndexOf('/'));
 
@@ -38,6 +40,10 @@
 		plateLink.set('name', '/plates');
 		plateLink.set('classes', 'text-neutral-600 hover:text-orange-400');
 		return plateLink;
+	};
+
+	const setOpenPix = (status: boolean) => {
+		openPix = status;
 	};
 
 	const setOpenPatch = (status: boolean) => {
@@ -76,16 +82,36 @@
 
 	{#if isExpanded}
 		<div class="flex justify-between items-end">
-			<div class="flex flex-col justify-center gap-1">
+			<div class="flex">
+				<div class="flex flex-col justify-center">
+					<button
+						on:click={() => {
+							openPatch = true;
+						}}
+						class="self-center hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+					>
+						<p
+							class="w-[35px] h-[35px] rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 p-1"
+						>
+							✨
+						</p></button
+					>
+
+					<p class="text-black/70 text-sm">alpha 0.0.2</p>
+				</div>
 				<button
 					on:click={() => {
-						openPatch = true;
+						openPix = true;
 					}}
-					class="w-8 h-8 self-center p-1 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500"
-					>✨</button
+					class="self-baseline hover:bg-black/10 rounded-full ease-out duration-300 p-1"
 				>
-
-				<p class="text-black/70 text-sm">alpha 0.0.2</p>
+					<Icon
+						icon="ph:hand-heart-duotone"
+						width="35"
+						height="35"
+						class="rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white/80 p-1"
+					/>
+				</button>
 			</div>
 
 			<div class="flex flex-col gap-4 px-10">
@@ -142,18 +168,79 @@
 		</nav>
 	</div>
 
-	<div class="flex flex-col justify-center gap-2">
+	<div class="flex flex-col items-center gap-5">
 		<button
 			on:click={() => {
-				openPatch = true;
+				openPix = true;
 			}}
-			class="w-8 h-8 self-center p-1 rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500"
-			>✨</button
+			class="hover:bg-black/10 rounded-full ease-out duration-300 p-1"
 		>
+			<Icon
+				icon="ph:hand-heart-duotone"
+				width="35"
+				height="35"
+				class="rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white/80 p-1"
+			/>
+		</button>
 
-		<p class="text-black/70 text-sm text-center">alpha 0.0.2</p>
+		<div class="flex flex-col justify-center">
+			<button
+				on:click={() => {
+					openPatch = true;
+				}}
+				class="self-center hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+			>
+				<p
+					class="w-[35px] h-[35px] rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 p-1"
+				>
+					✨
+				</p></button
+			>
+
+			<p class="text-black/70 text-sm text-center">alpha 0.0.2</p>
+		</div>
 	</div>
 </div>
+
+{#if openPix}
+	<SimpleDialog setOpenPatch={setOpenPix}>
+		<div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+			<div class="sm:flex sm:items-start">
+				<div class="mt-3 sm:ml-4 sm:mt-0 sm:text-left">
+					<h3 class="text-xl font-semibold leading-6 text-gray-900 text-center" id="modal-title">
+						✨ Chaves Pix ✨
+					</h3>
+
+					<div class="mt-4">
+						<div class="w-80 text-center text-sm mx-auto pt-1 pb-4 text-neutral-600">
+							<p>Sua doação me incentiva a continuar melhorando e mantendo o projeto.</p>
+							<p>
+								Para manter A Mistura, preciso investir na hospedagem do site, hospedagem do
+								servidor, o uso da OpenAI e do GeminiAi.
+							</p>
+							<p>Muito obrigado pelo seu apoio ;)</p>
+						</div>
+
+						<div class="flex justify-center flex-col items-center">
+							<p class="">Envie para:</p>
+							<p class="text-neutral-500 font-medium text-center">52436034 Allyson</p>
+						</div>
+
+						<div class="py-5">
+							<h4 class="text-xl font-semibold text-center pb-2">QR code</h4>
+							<img src={PixQRCodeImage} alt="pix qr code" class="w-1/2 mx-auto" />
+						</div>
+
+						<div>
+							<h4 class="text-xl font-semibold text-center">CNPJ</h4>
+							<p class="text-center">52.436.034/0001-27</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</SimpleDialog>
+{/if}
 
 {#if openPatch}
 	<SimpleDialog {setOpenPatch}>
