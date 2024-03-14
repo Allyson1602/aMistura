@@ -4,7 +4,7 @@ import { ApiBase } from './api';
 
 interface IPlateService {
 	listPlate(selectedIngredientsName: string[]): IReturnStatus<IPlate[]>;
-	getPlateImage(descriptionImage: string): IReturnStatus<string>;
+	generatePlateImage(plateId: number, description: string): IReturnStatus<IPlate>;
 }
 
 class PlateService extends ApiBase<any> implements IPlateService {
@@ -12,8 +12,8 @@ class PlateService extends ApiBase<any> implements IPlateService {
 		return this.post('/plates/ai', { ingredients: selectedIngredientsName });
 	}
 
-	public getPlateImage(descriptionImage: string): IReturnStatus<string> {
-		return this.get('/openai/image?description=' + descriptionImage);
+	public generatePlateImage(plateId: number, description: string): IReturnStatus<IPlate> {
+		return this.post('/openai/image', { plateId, description });
 	}
 }
 

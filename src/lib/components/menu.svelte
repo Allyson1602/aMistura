@@ -11,7 +11,7 @@
 
 	let isExpanded = false;
 	let openPatch: boolean = false;
-	let openPix: boolean = true;
+	let openPix: boolean = false;
 
 	$: active = route.slice(route.lastIndexOf('/'));
 

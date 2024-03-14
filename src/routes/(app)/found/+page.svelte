@@ -17,6 +17,7 @@
 	import { getRandomNumber } from '$lib/utils/get-random-number';
 	import { errorMessages } from '$lib/resources/error-messages';
 	import toast from 'svelte-french-toast';
+	import type { IPlate } from '$models/plate.model';
 
 	let inputElem: HTMLInputElement;
 	let ingredientValue = '';
@@ -47,14 +48,6 @@
 				if (response.status === 201 && response.data) {
 					let { data: platesData } = response.data;
 
-					// const platesWithImage = platesData.map(async (plateItem) => {
-					// 	const imageLink = await plateService.getPlateImage(plateItem.image.description);
-					// 	plateItem.image.link = imageLink.data;
-					// 	return plateItem;
-					// });
-
-					// platesData = await Promise.all(platesWithImage);
-
 					plateList.set([...new Set(platesData)]);
 					const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', [
 						...new Set(platesData)
@@ -76,6 +69,38 @@
 				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
 				loadingPlates = ELoadingStatus.finished;
 			});
+
+		generatePlateImage($plateList);
+	};
+
+	const generatePlateImage = (updatePlates: IPlate[]): void => {
+		updatePlates.forEach(async (plateItem) => {
+			const response = await plateService.generatePlateImage(
+				plateItem.id,
+				plateItem.image.description
+			);
+
+			plateList.update((currentPlates) => {
+				const platesUpdated = currentPlates.map((currentPlateItem) => {
+					if (currentPlateItem.id === response.data.data.id) {
+						return {
+							...currentPlateItem,
+							image: {
+								...currentPlateItem.image,
+								link: response.data.data.image.link
+							}
+						};
+					}
+
+					return currentPlateItem;
+				});
+
+				const listPlateStorage = hDefaultSessionStorage(EDomain.LIST_PLATE, '', platesUpdated);
+				sessionStorage.setItem(listPlateStorage.identifier, listPlateStorage.valueString);
+
+				return platesUpdated;
+			});
+		});
 	};
 
 	const getIngredients = (value: string): void => {
@@ -203,7 +228,7 @@
 					bind:this={inputElem}
 					on:input={handleIngredientInput}
 					class="w-full shadow-lg text-base p-2 rounded border border-neutral-200 placeholder:text-sm"
-					placeholder="digite um ingrediente"
+					placeholder="Digite um ingrediente"
 				/>
 
 				{#if loadingIngredients === ELoadingStatus.getting}
