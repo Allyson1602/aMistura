@@ -88,11 +88,9 @@
 						on:click={() => {
 							openPatch = true;
 						}}
-						class="self-center hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+						class="self-center hover:bg-orange-400/30 rounded-full ease-out duration-300 p-1 border border-orange-400 border-solid"
 					>
-						<p
-							class="w-[35px] h-[35px] rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 p-1"
-						>
+						<p class="w-[35px] h-[35px] rounded-full bg-orange-400 p-1 leading-relaxed">
 							✨
 						</p></button
 					>
@@ -103,13 +101,13 @@
 					on:click={() => {
 						openPix = true;
 					}}
-					class="self-baseline hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+					class="self-baseline hover:bg-orange-400/30 rounded-full ease-out duration-300 p-1 border border-orange-400 border-solid"
 				>
 					<Icon
 						icon="ph:hand-heart-duotone"
 						width="35"
 						height="35"
-						class="rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white/80 p-1"
+						class="rounded-full bg-orange-400 text-white/60 p-1"
 					/>
 				</button>
 			</div>
@@ -173,13 +171,13 @@
 			on:click={() => {
 				openPix = true;
 			}}
-			class="hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+			class="hover:bg-orange-400/30 rounded-full ease-out duration-300 p-1 border border-orange-400 border-solid"
 		>
 			<Icon
 				icon="ph:hand-heart-duotone"
 				width="35"
 				height="35"
-				class="rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white/80 p-1"
+				class="rounded-full bg-orange-400 text-white/60 p-1"
 			/>
 		</button>
 
@@ -188,13 +186,9 @@
 				on:click={() => {
 					openPatch = true;
 				}}
-				class="self-center hover:bg-black/10 rounded-full ease-out duration-300 p-1"
+				class="self-center hover:bg-orange-400/30 rounded-full ease-out duration-300 p-1 border border-orange-400 border-solid"
 			>
-				<p
-					class="w-[35px] h-[35px] rounded-full bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 p-1"
-				>
-					✨
-				</p></button
+				<p class="w-[35px] h-[35px] rounded-full bg-orange-400 p-1 leading-relaxed">✨</p></button
 			>
 
 			<p class="text-black/70 text-sm text-center">alpha 0.0.2</p>
