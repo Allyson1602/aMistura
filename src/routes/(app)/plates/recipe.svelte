@@ -65,7 +65,7 @@
 <div bind:this={elementToScroll} class="pt-2 px-3 overflow-auto md:h-full">
 	<button on:click={handleGoBack} class="md:hidden text-orange-400 pl-2">voltar</button>
 
-	<div class="flex flex-col gap-3">
+	<div class="flex flex-col gap-3 h-dvh">
 		<div class="flex flex-col items-center gap-1">
 			<p class="font-sans2 text-5xl underline decoration-2 underline-offset-4">Receita</p>
 			<Rating rating={plate?.rating} />
