@@ -4,11 +4,15 @@ import { ApiBase } from './api';
 
 interface IIngredientService {
 	listIngredient(value: string): IReturnStatus<IIngredient[]>;
+	createTempIngredient(value: string): IReturnStatus<IIngredient>;
 }
 
-class IngredientService extends ApiBase<IIngredient[]> implements IIngredientService {
+class IngredientService extends ApiBase<IIngredient> implements IIngredientService {
 	public listIngredient(value: string): IReturnStatus<IIngredient[]> {
 		return this.get('/ingredients/' + value);
+	}
+	public createTempIngredient(value: string): IReturnStatus<IIngredient> {
+		return this.post('/ingredients', { body: value });
 	}
 }
 
