@@ -21,9 +21,6 @@
 	import SimpleDialog from '$lib/components/app/simple-dialog.svelte';
 
 	let inputElem: HTMLInputElement;
-	let inputElemAdd: HTMLInputElement;
-	let ingredientValue = '';
-	let newIngredientValue = '';
 	let selectedIngredients: IIngredient[] = [];
 	let loadingPlates = ELoadingStatus.notStarted;
 	let loadingIngredients = ELoadingStatus.notStarted;
@@ -38,7 +35,7 @@
 	}
 
 	const cleanField = (): void => {
-		ingredientValue = '';
+		inputElem.value = '';
 		ingredientsList.set([]);
 	};
 
@@ -48,7 +45,7 @@
 
 	const addIngredient = (): void => {
 		ingredientService
-			.createTempIngredient(newIngredientValue)
+			.createTempIngredient(inputElem.value)
 			.then((response) => {
 				if (response.status === 201) {
 					openAddIngredient = false;
@@ -194,14 +191,6 @@
 		inputElem.value = value;
 	};
 
-	const handleAddIngredientInput = () => {
-		let value = inputElemAdd.value.toLowerCase();
-
-		value = value.replace(/[^a-záàâãéèêíóôõúç\s]/g, '');
-
-		inputElemAdd.value = value;
-	};
-
 	const handleClickAddIngredient = (newIngredient: IIngredient) => {
 		if (selectedIngredients.some((selectedItem) => selectedItem.id === newIngredient.id)) return;
 
@@ -275,15 +264,6 @@
 						width="20"
 						height="20"
 					/>
-				{:else if ingredientValue || $ingredientsList.length > 0}
-					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
-						<Icon
-							icon="ph:x-circle-bold"
-							class="text-neutral-400 cursor-pointer"
-							width="20"
-							height="20"
-						/>
-					</button>
 				{:else if openCreatingIngredient}
 					<button
 						on:click={() => (openAddIngredient = true)}
@@ -292,6 +272,15 @@
 						<Icon
 							icon="ph:plus-circle"
 							class="text-orange-600 cursor-pointer"
+							width="20"
+							height="20"
+						/>
+					</button>
+				{:else if inputElem?.value || $ingredientsList.length > 0}
+					<button on:click={cleanField} class="h-full flex items-center absolute top-0 right-2">
+						<Icon
+							icon="ph:x-circle-bold"
+							class="text-neutral-400 cursor-pointer"
 							width="20"
 							height="20"
 						/>
@@ -364,8 +353,8 @@
 						>
 							<input
 								id="ingredients-field"
-								bind:this={inputElemAdd}
-								on:input={handleAddIngredientInput}
+								bind:this={inputElem}
+								on:input={handleIngredientInput}
 								class="w-full shadow-lg text-base p-2 rounded border border-neutral-200 placeholder:text-sm"
 								placeholder="Digite um ingrediente"
 							/>
@@ -376,6 +365,11 @@
 								>adicionar</button
 							>
 						</div>
+
+						<p class="w-3/4 mx-auto text-center text-xs text-neutral-500">
+							Você conseguirá adicionar este ingrediente nesse momento mas passará por uma
+							validação.
+						</p>
 					</div>
 				</div>
 			</div>

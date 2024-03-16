@@ -11,8 +11,8 @@ class IngredientService extends ApiBase<IIngredient> implements IIngredientServi
 	public listIngredient(value: string): IReturnStatus<IIngredient[]> {
 		return this.get('/ingredients/' + value);
 	}
-	public createTempIngredient(value: string): IReturnStatus<IIngredient> {
-		return this.post('/ingredients', { body: value });
+	public createTempIngredient(name: string): IReturnStatus<IIngredient> {
+		return this.post('/ingredients', { name });
 	}
 }
 
