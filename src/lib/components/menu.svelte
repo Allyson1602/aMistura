@@ -159,8 +159,15 @@
 
 			<a
 				href={getPlateLink(active).get('name')}
-				class={`${getPlateLink(active).get('classes')} ease-linear`}
+				class={`${getPlateLink(active).get('classes')} ease-linear relative`}
 			>
+				{#if $plateList.length > 0}
+					<div
+						class="w-5 h-5 rounded-full bg-orange-400 text-center text-white leading-relaxed absolute -right-2 -top-2 text-xs"
+					>
+						{$plateList.length}
+					</div>
+				{/if}
 				<Icon icon="ph:bowl-food-bold" width="35" height="35" />
 			</a>
 		</nav>
