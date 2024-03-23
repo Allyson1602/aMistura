@@ -256,17 +256,6 @@
 
 					<div class="flex flex-col gap-8 mt-4">
 						<div>
-							<p class="text-xs text-gray-400">21/02/2024 - v0.0.2</p>
-							<ol class="list-decimal list-inside">
-								<li class="text-sm text-gray-500">Correção de erro ao gerar receitas.</li>
-								<li class="text-sm text-gray-500 py-1">Mensagem para erros ao buscar receitas.</li>
-								<li class="text-sm text-gray-500">
-									Ajuste com a altura máxima da tela em smartphones.
-								</li>
-							</ol>
-						</div>
-
-						<div>
 							<p class="text-xs text-gray-400">16/03/2024 - v0.0.3</p>
 							<ol class="list-decimal list-inside">
 								<li class="text-sm text-gray-500">Criação de imagem para cada receita.</li>
@@ -274,6 +263,17 @@
 									Em um tablet ou computador é possível ver no menu quantas receitas foram buscadas.
 								</li>
 								<li class="text-sm text-gray-500">Opção para o usuário adicionar ingrediente.</li>
+							</ol>
+						</div>
+
+						<div>
+							<p class="text-xs text-gray-400">21/02/2024 - v0.0.2</p>
+							<ol class="list-decimal list-inside">
+								<li class="text-sm text-gray-500">Correção de erro ao gerar receitas.</li>
+								<li class="text-sm text-gray-500 py-1">Mensagem para erros ao buscar receitas.</li>
+								<li class="text-sm text-gray-500">
+									Ajuste com a altura máxima da tela em smartphones.
+								</li>
 							</ol>
 						</div>
 					</div>

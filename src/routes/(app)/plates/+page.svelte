@@ -14,6 +14,9 @@
 	import { browser } from '$app/environment';
 	import { plateList } from '$stores/plate.store';
 	import { goto } from '$app/navigation';
+	import plateService from '$services/plate.service';
+
+	plateService.generatePlateImage({} as any, {} as any);
 
 	const breakpointMd = getBreakpoint(EBreakpoints.MD);
 	let currentPlate = 0;

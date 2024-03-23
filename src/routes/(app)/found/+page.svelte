@@ -107,13 +107,7 @@
 			plateList.update((currentPlates) => {
 				const platesUpdated = currentPlates.map((currentPlateItem) => {
 					if (currentPlateItem.id === response.data.data.id) {
-						return {
-							...currentPlateItem,
-							image: {
-								...currentPlateItem.image,
-								link: response.data.data.image.link
-							}
-						};
+						return response.data.data;
 					}
 
 					return currentPlateItem;
